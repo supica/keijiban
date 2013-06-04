@@ -35,12 +35,15 @@
   $id = $_POST['id'];
   $title = $_POST['title'];
   
-  if($id =="" || $title == "") {
-  echo "";
-  }
+//  if($id =="" || $title == "") {
+//  echo "";
+//  }
   
-
-  $query = mysql_query("INSERT INTO training01.board(id,title) VALUES('$id', '$title')", $link)
+  if($id != "" && $title != "") {
+	$query = mysql_query("INSERT INTO training01.board(id,title) VALUES('$id', '$title')", $link);
+  } elseif($id == "" || $title == "") {
+  	echo "入力してください";
+  }
   //$query = 'INSERT INTO training01.board(id,title) VALUES("'.$id.'","'.$title.'");';
   //$result = mysql_query($link,$query);
   //$result = mysqli_query($db,$query) or die('ERROR!(insert coment):MySQLサーバーへの接続に失敗しました。');
@@ -56,13 +59,37 @@
   <input type="submit" value="送信" name="submit" />
   </form>
 
-  <table>
   <table border="1" width="400" cellspacing="0" cellpadding="5">
   <tr>
     <th width="100">id</th>
     <th width="400">タイトル</th>
     <th width="100">削除</th>
   </tr>
+
+  <?php
+  $sql = "SELECT * FROM board";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+    ?>
+  
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+  <select name="">
+   
+  <?php
+  //データの取り出し
+  while ($row = mysql_fetch_assoc($result)) {
+
+      echo "<option value=\"";
+      echo $row['id'];
+      echo "\">";
+      echo $row['title'];  
+      echo "</option>";
+    }
+
+    ?>
+  <input type="submit" value="選択" name="submit" />
+  </select>
+  </form>
+  
 
   <?php
   //$remove = "<input type="submit" value="削除" name="submit" />";
@@ -72,6 +99,7 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
   //データの取り出し
+  
   while ($row = mysql_fetch_assoc($result)) {
       echo "<tr><td>";
       echo $row['id'];
@@ -83,6 +111,8 @@
     }
   
     ?>
+	
+	
   </table>
 
 </body>
