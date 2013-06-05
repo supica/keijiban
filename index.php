@@ -7,7 +7,7 @@
 <body>
 
 <?php
-  if(isset($_SESSION['post_proc']) && $_SESSION['post_proc'] == true){
+  if(isset($_SESSION['post_proc']) == true){
   $_SESSION['post_proc'] = false;
   header('Location:'.$_SERVER['PHP_SELF']);
   exit();
@@ -17,6 +17,7 @@
   $user = "root";
   $pass = "";
   $db = "training01";
+  $comment = '';
 
   // MySQLへ接続する
   $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
@@ -29,35 +30,31 @@
  // $rows = mysql_num_rows($result);
 
   //フォームのデータが送信された場合に行う処理
-  //if(isset($_POST['submit']) && $_POST['submit']=='送信'){
-  //$_SESSION['post_proc'] = false;
-  
-  $id = $_POST['id'];
-  $title = $_POST['title'];
-  
-//  if($id =="" || $title == "") {
-//  echo "";
-//  }
-  
-  if($id != "" && $title != "") {
-	$query = mysql_query("INSERT INTO training01.board(id,title) VALUES('$id', '$title')", $link);
-  } elseif($id == "" || $title == "") {
-  	echo "入力してください";
+  if(isset($_POST['submit']) && $_POST['submit']=='送信'){
+    
+    $id = $_POST['id'];
+    $title = $_POST['title'];
+	$comment = $_POST['comment'];
+    
+	  if($id != "" && $title != "") {
+		$query = mysql_query("INSERT INTO training01.board(id,title) VALUES('$id', '$title')", $link);
+	  } elseif($id == "" || $title == "") {
+	  	echo "入力してください";
+   }
   }
-  //$query = 'INSERT INTO training01.board(id,title) VALUES("'.$id.'","'.$title.'");';
-  //$result = mysql_query($link,$query);
-  //$result = mysqli_query($db,$query) or die('ERROR!(insert coment):MySQLサーバーへの接続に失敗しました。');
-  
 ?>
 
-
+<!-- コメント投稿フォーム -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
   <label for="id">id：</label><br />
   <input type="text" id="id" name="id" /><br />
   <label for="title">タイトル：</label><br />
-  <textarea id="title" name="title"  cols="50" rows="5"></textarea><br />
+  <textarea id="title" name="title" cols="50"></textarea><br />
+  <label>コメント：</label><br />
+  <textarea id="comment" name="comment" cols="50" rows="6"></textarea>
   <input type="submit" value="送信" name="submit" />
   </form>
+<!-- コメント投稿フォーム_END -->
 
   <table border="1" width="400" cellspacing="0" cellpadding="5">
   <tr>
@@ -69,38 +66,42 @@
   <?php
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-    ?>
+  ?>
   
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-  <select name="">
-   
-  <?php
-  //データの取り出し
-  while ($row = mysql_fetch_assoc($result)) {
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >タイトル：
+  <select name="board-id">
+    <?php
+    //データの取り出し：セレクトボード
+    while ($row = mysql_fetch_assoc($result)) {
 
       echo "<option value=\"";
       echo $row['id'];
       echo "\">";
-      echo $row['title'];  
+      echo $row['title'];
       echo "</option>";
     }
-
     ?>
-  <input type="submit" value="選択" name="submit" />
+	
+  <input type="submit" value="選択" name="select_submit" />
   </select>
   </form>
   
 
   <?php
-  //$remove = "<input type="submit" value="削除" name="submit" />";
-  
   // クエリ(検索条件)を送信する
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
   //データの取り出し
+  $board = '';
   
   while ($row = mysql_fetch_assoc($result)) {
+
+  if(isset($_POST['select_submit'])=='選択'){
+
+    $board = $_POST['board-id'];	
+
+    if($board ==  $row['id']) {
       echo "<tr><td>";
       echo $row['id'];
       echo "</td><td>";
@@ -108,12 +109,23 @@
       echo "</td><td>";
       echo '';  
       echo "</td></tr>";
-    }
+    } 
+   }
+  else {
+  echo "<tr><td>";
+  echo $row['id'];
+  echo "</td><td>";
+  echo $row['title'];  
+  echo "</td><td>";
+  echo '';  
+  echo "</td></tr>";	    
+  }
+}
   
-    ?>
-	
-	
+  ?>
+
   </table>
 
 </body>
 </html>
+
