@@ -17,7 +17,6 @@
   $user = "root";
   $pass = "";
   $db = "training01";
-  $comment = '';
 
   // MySQLへ接続する
   $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
@@ -32,33 +31,27 @@
   //フォームのデータが送信された場合に行う処理
   if(isset($_POST['submit']) && $_POST['submit']=='送信'){
     
-    $id = $_POST['id'];
     $title = $_POST['title'];
-	$comment = $_POST['comment'];
     
-	  if($id != "" && $title != "") {
-		$query = mysql_query("INSERT INTO training01.board(id,title) VALUES('$id', '$title')", $link);
-	  } elseif($id == "" || $title == "") {
+	  if($title != "") {
+		$query = mysql_query("INSERT INTO training01.board(title) VALUES('$title')", $link);
+	  } elseif($title == "") {
 	  	echo "入力してください";
    }
   }
 ?>
 
-<!-- コメント投稿フォーム -->
+<!-- タイトル：登録フォーム -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-  <label for="id">id：</label><br />
-  <input type="text" id="id" name="id" /><br />
   <label for="title">タイトル：</label><br />
   <textarea id="title" name="title" cols="50"></textarea><br />
-  <label>コメント：</label><br />
-  <textarea id="comment" name="comment" cols="50" rows="6"></textarea>
   <input type="submit" value="送信" name="submit" />
   </form>
-<!-- コメント投稿フォーム_END -->
+<!-- タイトル：登録フォーム_END -->
 
+<!--  -->
   <table border="1" width="400" cellspacing="0" cellpadding="5">
   <tr>
-    <th width="100">id</th>
     <th width="400">タイトル</th>
     <th width="100">削除</th>
   </tr>
@@ -68,7 +61,7 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   ?>
   
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >タイトル：
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >タイトルを選ぶ：
   <select name="board-id">
     <?php
     //データの取り出し：セレクトボード
@@ -94,38 +87,60 @@
   
   //データの取り出し
   $board = '';
-  
+  $comment = '';
+  $board_id ='';
+
   while ($row = mysql_fetch_assoc($result)) {
 
   if(isset($_POST['select_submit'])=='選択'){
 
-    $board = $_POST['board-id'];	
+    $board = $_POST['board-id'];
 
     if($board ==  $row['id']) {
       echo "<tr><td>";
-      echo $row['id'];
-      echo "</td><td>";
-      echo $row['title'];  
+      echo $row['title'];
       echo "</td><td>";
       echo '';  
       echo "</td></tr>";
-    } 
-   }
-  else {
+    }
+    
+  }
+   
+   else {
   echo "<tr><td>";
-  echo $row['id'];
-  echo "</td><td>";
-  echo $row['title'];  
+  echo $row['title'];
   echo "</td><td>";
   echo '';  
-  echo "</td></tr>";	    
+  echo "</td></tr>";
   }
 }
-  
+ 
   ?>
 
-  </table>
+<?php
+      if(isset($_POST['comment_submit'])=='送信'){
 
+      $comment = $_POST['comment'];
+
+      $query = "SELECT * FROM comment WHERE contents = '$comment';";
+ 
+        if($comment != "") {
+        $query = mysql_query("INSERT INTO training01.comment(board_id,contents) VALUES('$board_id'.'$comment')", $link);    
+        } elseif($comment == "") {
+        echo "入力してください";
+        }
+      }
+
+?>
+  <!-- コメント欄 -->
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+  <br /><label>コメントを書き込む：</label><br />
+  <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
+  <input type="submit" value="送信" name="comment_submit" /><br /><br />
+  </form>
+  <!-- コメント欄_END -->
+ 
+  </table>
+<p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p>
 </body>
 </html>
-
