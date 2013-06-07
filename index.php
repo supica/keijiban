@@ -61,7 +61,7 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   ?>
   
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >タイトルを選ぶ：
+  <form method="post" action="comment.php" >タイトルを選ぶ：
   <select name="board-id">
     <?php
     //データの取り出し：セレクトボード
@@ -87,8 +87,7 @@
   
   //データの取り出し
   $board = '';
-  $comment = '';
-  $board_id ='';
+  //$board_id ='';
 
   while ($row = mysql_fetch_assoc($result)) {
 
@@ -116,29 +115,6 @@
 }
  
   ?>
-
-<?php
-      if(isset($_POST['comment_submit'])=='送信'){
-
-      $comment = $_POST['comment'];
-
-      $query = "SELECT * FROM comment WHERE contents = '$comment';";
- 
-        if($comment != "") {
-        $query = mysql_query("INSERT INTO training01.comment(board_id,contents) VALUES('$board_id'.'$comment')", $link);    
-        } elseif($comment == "") {
-        echo "入力してください";
-        }
-      }
-
-?>
-  <!-- コメント欄 -->
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-  <br /><label>コメントを書き込む：</label><br />
-  <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
-  <input type="submit" value="送信" name="comment_submit" /><br /><br />
-  </form>
-  <!-- コメント欄_END -->
  
   </table>
 <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p>
