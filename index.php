@@ -41,6 +41,21 @@
   }
 ?>
 
+<?php
+  //削除ボタンの実行
+
+  $delete_id = '';
+
+  if(isset($_POST['submit']) && $_POST['delete_submit'] == '削除'){
+  $delete_id = $_POST['delete_id'];
+
+  $sql = "DELETE FROM board WHERE id = $delete_id";
+  $result = mysql_query($db,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+  }
+  
+  //mysql_close($db);
+?>
+
 <!-- タイトル：登録フォーム -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
   <label for="title">タイトル：</label><br />
@@ -49,13 +64,14 @@
   </form>
 <!-- タイトル：登録フォーム_END -->
 
-<!--  -->
+<!-- タイトル一覧 -->
   <table border="1" width="400" cellspacing="0" cellpadding="5">
   <tr>
     <th width="400">タイトル</th>
     <th width="100">削除</th>
   </tr>
 
+<!-- タイトルを選ぶ -->
   <?php
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
@@ -87,7 +103,7 @@
   
   //データの取り出し
   $board = '';
-  //$board_id ='';
+  $post_id = '';
 
   while ($row = mysql_fetch_assoc($result)) {
 
@@ -99,7 +115,11 @@
       echo "<tr><td>";
       echo $row['title'];
       echo "</td><td>";
-      echo '';  
+      echo '';
+      echo '<form>'.
+           '<input type="hidden" value="'.$post_id.'" name="delete_id" />'.
+           '<input type="submit" value="削除" name="delete_submit" />'.
+           '</form>';
       echo "</td></tr>";
     }
     
@@ -109,7 +129,13 @@
   echo "<tr><td>";
   echo $row['title'];
   echo "</td><td>";
-  echo '';  
+  echo '';
+  
+  //$delete_id = $POST['delete_id'];
+  echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+       '<input type="hidden" value="'.$post_id.'" name="delete_id" />'.
+       '<input type="submit" value="削除" name="delete_submit" />'.
+       '</form>';
   echo "</td></tr>";
   }
 }

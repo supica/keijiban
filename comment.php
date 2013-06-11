@@ -26,13 +26,15 @@
 
 
 <?php
-  // クエリ(検索条件)を送信する
+  // クエリ(タイトルの検索条件)を送信する
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
-  //データの取り出し
+  //データの取り出し(タイトルを表示)
   $board = '';
   $comment = '';
+
+  $board = $_POST['board-id'];    
 
   while ($row = mysql_fetch_assoc($result)) {
 
@@ -40,12 +42,12 @@
     echo "タイトル：";
     echo "<tr><td>";
     echo $row['title'];
+    echo $board;
     echo "</td><td>";
     echo '';  
     echo "</td></tr>";
   }
 
-    $board = $_POST['board-id'];    
 
     if(isset($_POST['comment_submit'])=='送信'){
 
@@ -55,6 +57,7 @@
  
     while ($row = mysql_fetch_assoc($result)) {
 
+      //選択したタイトルにコメントを書き込む
       if($board ==  $row['id'] && $comment != "") {
       $query = mysql_query("INSERT INTO training01.comment(board_id,contents) VALUES('$board','$comment')", $link);
   
@@ -67,41 +70,59 @@
         echo $comment;
         echo '」';
         echo "</td><td>";
-        
-
-        
         //echo '';  
         echo "</td></tr>";
       } elseif($comment == "") {
         echo "入力してください";
       }
-    
-  }
-  }
-  
-  } 
-  
+     }
+     }
+     }
+
 ?>
 
 
 <div>
-  <!-- コメント欄 -->
+  <!-- コメント投稿 -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
   <?php echo $row['title']; ?><br />  
-  <br /><label>コメントを書き込む：</label><br />
+  <br /><label>コメント投稿：</label><br />
   <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
   <input type="submit" value="送信" name="comment_submit" /><br /><br />
   <input type="hidden" value="<?php echo $board; ?>" name="board-id">
   </form>
-  <!-- コメント欄_END -->
+  <!-- コメント投稿_END -->
 </div>
 
+<!-- コメント一覧 -->
+  <table border="1" width="400" cellspacing="0">
+  <tr>
+    <th width="400">コメント</th>
+    <!--<th width="100">削除</th>-->
+  </tr>
 
 <?php
+   //if(isset($_POST['comment_submit'])=='送信'){
+  $sql = "SELECT * FROM comment";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
+  //データの取り出し()
+
+  while ($row = mysql_fetch_assoc($result)) {
+ 
+    if($board == $row['board_id']){
+      echo "<tr><td>";
+      echo " <br />".$row['board_id']."|".$row['contents'];
+      echo "</tr></td>";
+    }
+    //else {
+      //echo '';
+    //}
+    
+    }
 ?>
 
-
+</table>
 <p><a href="index.php">HOMEに戻る</a></p>
 </body>
 </html>
