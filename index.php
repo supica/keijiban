@@ -8,8 +8,8 @@
 
 <?php
   if(isset($_SESSION['post_proc']) == true){
-  $_SESSION['post_proc'] = false;
-  header('Location:'.$_SERVER['PHP_SELF']);
+    $_SESSION['post_proc'] = false;
+    header('Location:'.$_SERVER['PHP_SELF']);
   exit();
   }
 
@@ -24,125 +24,104 @@
   // データベースを選択する
   $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
 
-
-  //結果セットの行数を取得する
- // $rows = mysql_num_rows($result);
-
   //フォームのデータが送信された場合に行う処理
-  if(isset($_POST['submit']) && $_POST['submit']=='送信'){
-    
+  if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
+
     $title = $_POST['title'];
     
-	  if($title != "") {
-		$query = mysql_query("INSERT INTO training01.board(title) VALUES('$title')", $link);
-	  } elseif($title == "") {
-	  	echo "入力してください";
-   }
+    if($title != "") {
+      $sql = "INSERT INTO $db.board(title) VALUES('$title')";
+      $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+	}
+	elseif($title == "") {
+      echo "入力してください";
+    }
   }
-?>
 
-<?php
-  //削除ボタンの実行
-
+  //削除ボタンが押された場合に行う処理
   $delete_id = '';
 
-  if(isset($_POST['submit']) && $_POST['delete_submit'] == '削除'){
-  $delete_id = $_POST['delete_id'];
-
-  $sql = "DELETE FROM board WHERE id = $delete_id";
-  $result = mysql_query($db,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+  if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
+    $delete_id = $_POST['delete_id'];
+ 
+    $sql = "DELETE FROM board WHERE id = $delete_id";
+    $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
   }
-  
-  //mysql_close($db);
 ?>
 
-<!-- タイトル：登録フォーム -->
+  <!-- タイトル一覧 -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-  <label for="title">タイトル：</label><br />
-  <textarea id="title" name="title" cols="50"></textarea><br />
-  <input type="submit" value="送信" name="submit" />
+    <label for="title">タイトル：</label><br />
+    <textarea id="title" name="title" cols="50"></textarea><br />
+    <input type="submit" value="送信" name="submit" />
   </form>
-<!-- タイトル：登録フォーム_END -->
 
-<!-- タイトル一覧 -->
   <table border="1" width="400" cellspacing="0" cellpadding="5">
   <tr>
     <th width="400">タイトル</th>
     <th width="100">削除</th>
   </tr>
 
-<!-- タイトルを選ぶ -->
-  <?php
+  <!-- 一覧からタイトルを選ぶ -->
+<?php
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-  ?>
+?>
   
-  <form method="post" action="comment.php" >タイトルを選ぶ：
+<form method="post" action="comment.php" >タイトルを選ぶ：
   <select name="board-id">
     <?php
-    //データの取り出し：セレクトボード
-    while ($row = mysql_fetch_assoc($result)) {
-
-      echo "<option value=\"";
-      echo $row['id'];
-      echo "\">";
-      echo $row['title'];
-      echo "</option>";
-    }
-    ?>
-	
+      //データの取り出し：セレクトボード
+      while ($row = mysql_fetch_assoc($result)) {
+        echo "<option value=\"";
+        echo $row['id'];
+        echo "\">";
+        echo $row['title'];
+        echo "</option>";
+      }
+    ?>	
   <input type="submit" value="選択" name="select_submit" />
   </select>
-  </form>
-  
+</form>
 
-  <?php
-  // クエリ(検索条件)を送信する
+<?php
+  // タイトルの表示・＜クエリ(検索条件)を送信する＞
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
-  //データの取り出し
   $board = '';
-  $post_id = '';
 
   while ($row = mysql_fetch_assoc($result)) {
 
-  if(isset($_POST['select_submit'])=='選択'){
+    if(isset($_POST['select_submit'])=='選択'){
 
-    $board = $_POST['board-id'];
+      $board = $_POST['board-id'];
 
-    if($board ==  $row['id']) {
-      echo "<tr><td>";
-      echo $row['title'];
-      echo "</td><td>";
-      echo '';
-      echo '<form>'.
-           '<input type="hidden" value="'.$post_id.'" name="delete_id" />'.
-           '<input type="submit" value="削除" name="delete_submit" />'.
-           '</form>';
-      echo "</td></tr>";
+
+      if($board ==  $row['id']) {
+        echo "<tr><td>";
+        echo $row['title'];
+        echo "</td><td>";
+        echo '';
+        echo "</td></tr>";
+      }   
     }
-    
+    else {
+     echo "<tr><td>";
+     echo $row['title'];
+     echo "</td><td>";
+     echo '';
+     echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+          '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+          '<input type="submit" value="削除" name="delete_submit" />'.
+          '</form>';
+     echo "</td></tr>\n";
+   }
   }
-   
-   else {
-  echo "<tr><td>";
-  echo $row['title'];
-  echo "</td><td>";
-  echo '';
-  
-  //$delete_id = $POST['delete_id'];
-  echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-       '<input type="hidden" value="'.$post_id.'" name="delete_id" />'.
-       '<input type="submit" value="削除" name="delete_submit" />'.
-       '</form>';
-  echo "</td></tr>";
-  }
-}
- 
-  ?>
+?>
+
  
   </table>
-<p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p>
+<!--<p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p>-->
 </body>
 </html>
