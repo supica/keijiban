@@ -22,19 +22,7 @@
 
   // データベースを選択する
   $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
-?>
 
-
-<?php
-  // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
-  $sql = "SELECT * FROM comment";
-  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-  
-  //データの取り出し(タイトルを表示)
-  $board = '';
-  $comment = '';
-
-<?php
   //削除ボタンが押された場合に行う処理
   $delete_id = '';
 
@@ -44,13 +32,22 @@
     $sql = "DELETE FROM comment WHERE id = $delete_id";
     $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
   }
+
 ?>
 
 
-  $board = $_POST['board-id'];    
+<?php
+  // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
+  $sql = "SELECT * FROM board";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+  
+  //データの取り出し(タイトルを表示)
+  $board = '';
+  $comment = '';
+
+  $board = $_POST['board-id'];
 
   while ($row = mysql_fetch_assoc($result)) {
-
     if($board ==  $row['id']) {
       echo "タイトル：";
       echo "<tr><td>";
@@ -60,21 +57,21 @@
       echo '';  
       echo "</td></tr>";
     }
+  }
 
-    //選択したタイトルにコメントが投稿された場合の処理
-    if(isset($_POST['comment_submit'])=='送信'){
 
-      $comment = $_POST['comment'];
-      $sql = "SELECT * FROM comment WHERE contents = '$board','$comment';";
+  //選択したタイトルにコメントが投稿された場合の処理
+  //if(isset($_POST['submit'])=='コメント送信'){
+  if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
+
+    $comment = $_POST['comment'];
+    echo $comment;
+
+    if($comment != ""){
+      $sql = "INSERT INTO comment(board_id,contents) VALUES('$board','$comment')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
- 
-      while ($row = mysql_fetch_assoc($result)) {
 
-        if($board ==  $row['id'] && $comment != "") {
-          $sql = "INSERT INTO $db.comment(board_id,contents) VALUES('$board','$comment')";
-          $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-  
-          echo '投稿内容・・・';
+      echo '投稿内容・・・';
           echo "<tr><td>";
           echo "</td><td>";
           echo '「';
@@ -84,12 +81,10 @@
           echo "</td><td>";
           //echo '';  
           echo "</td></tr>";
-        }
-        elseif($comment == "") {
+     }
+     elseif($comment == "") {
           echo "入力してください";
-        }
-      }
-    }
+     }
   }
 
 ?>
@@ -101,8 +96,8 @@
     <?php echo $row['title']; ?><br /><br />
       <label>コメント投稿：</label><br />
       <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
-      <input type="submit" value="送信" name="comment_submit" /><br /><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
+      <input type="submit" value="コメント送信" name="submit" /><br /><br />
   </form>
   <!-- コメント投稿フォーム_END -->
   </div>
@@ -127,8 +122,9 @@
       echo " <br />".$row['board_id']."|".$row['contents'];
       echo "</td>";
       echo "<td>";
-      echo '<form>'.
+      echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
            '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+           '<input type="hidden" value="'.$board.'" name="board-id" />'.
            '<input type="submit" value="削除" name="delete_submit" />'.
            '</form>';
       echo "</tr></td>\n";
