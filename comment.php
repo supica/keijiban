@@ -1,10 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>コメント投稿</title>
+  <title>ひとこと掲示板:コメント投稿</title>
 </head>
 
 <body>
+  <h1>ひとこと掲示板</h1>
+
 <?php
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
@@ -52,7 +54,7 @@
       echo "タイトル：";
       echo "<tr><td>";
       echo $row['title'];
-      echo $board;
+      //echo $board;
       echo "</td><td>";
       echo '';  
       echo "</td></tr>";
@@ -61,17 +63,16 @@
 
 
   //選択したタイトルにコメントが投稿された場合の処理
-  //if(isset($_POST['submit'])=='コメント送信'){
   if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
 
     $comment = $_POST['comment'];
-    echo $comment;
+    //echo $comment;
 
     if($comment != ""){
       $sql = "INSERT INTO comment(board_id,contents) VALUES('$board','$comment')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
-      echo '投稿内容・・・';
+      echo '<br /><br />投稿内容・・・';
           echo "<tr><td>";
           echo "</td><td>";
           echo '「';
@@ -83,7 +84,7 @@
           echo "</td></tr>";
      }
      elseif($comment == "") {
-          echo "入力してください";
+          echo '<font color = "red"><br /><br />※コメントを入力してください</font>';
      }
   }
 
@@ -105,12 +106,11 @@
   <!-- コメント一覧 -->
   <table border="1" width="400" cellspacing="0">
   <tr>
-    <th width="400">コメント</th>
+    <th width="400">コメント一覧</th>
     <th width="100">削除</th>
   </tr>
 
 <?php
-  //if(isset($_POST['comment_submit'])=='送信'){
   $sql = "SELECT * FROM comment";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
@@ -119,7 +119,8 @@
  
     if($board == $row['board_id']){
       echo "<tr><td>";
-      echo " <br />".$row['board_id']."|".$row['contents'];
+      echo " <br />".$row['contents'];
+      //echo " <br />".$row['board_id']."|".$row['contents'];
       echo "</td>";
       echo "<td>";
       echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
