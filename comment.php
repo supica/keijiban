@@ -19,7 +19,7 @@
   $pass = "";
   $db = "training01";
 
-  // MySQLへ接続する
+  // MySQLへ接続する 
   $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
 
   // データベースを選択する
