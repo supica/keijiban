@@ -17,12 +17,17 @@
   $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
 
   $user_name = '';
-  
+  $error_message = '';
+
+  //登録画面からユーザー名とパスワードが送信された時
   if(isset($_POST['submit'])){
    $user_name = $_POST['user_name'];
-    $password = sha1($_POST['password']);
-
+   $password = sha1($_POST['password']);
+     //ユーザー名とパスワードがどちらも入力されていたら
      if($user_name != "" && $password != ""){
+     $sql = "SELECT * FROM users WHERE user_name = '$user_name' AND password = '$password'";
+     $result = mysql_query($sql,$link);
+       //ユーザー名とパスワードで問い合わせる
        if(mysql_num_rows($result) == 0){
          $sql = "INSERT INTO $db.users(id,user_name,password) VALUES(NULL,'$user_name','$password')";
          $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -30,6 +35,13 @@
          header('Location: regist02.php');
          exit;
        }
+       else{
+       //すでにいる時コメント表示と戻るリンクを表示する
+       echo '<font color = "red">※このユーザー名は使用されています。<br />　他のユーザー名を指定してください。</font>'.'<br /><br /><a href="">戻る</a>';
+       }
+     }
+     else{
+     echo '<font color = "red">※入力内容が正しくありません。</font>';
      }
   }
 

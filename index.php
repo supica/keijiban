@@ -6,6 +6,7 @@
 
 <body>
   <h1>ひとこと掲示板</h1>
+
   <a href="login.php">ユーザー認証</a>　　　
   <a href="regist.php">ユーザー登録</a><br /><br />
 
