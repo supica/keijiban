@@ -9,7 +9,7 @@
 
 <body>
   <h1>ひとこと掲示板</h1>
-  <h2>ユーザー登録が完了しました</h2>
+  <h2>ユーザー登録が完了しました </h2>
 <div>
 </div><!-- post_comment_form_END -->
 <p><a href="index.php">HOMEに戻る</a></p>

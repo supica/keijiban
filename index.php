@@ -66,7 +66,7 @@
     <th width="100">削除</th>
   </tr>
 
-  <!-- 一覧からタイトルを選ぶ -->
+  <!-- 一覧からタイトルを選ぶ  -->
 <?php
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
