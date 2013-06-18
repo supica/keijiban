@@ -7,14 +7,9 @@
 <body>
   <h1>ひとこと掲示板</h1>
 
-  <a href="login.php">ログイン</a>　　　
-  <a href="regist.php">ユーザー登録</a>　　　
-  <?php 
-  if(isset($_COOKIE['user_name']))
-  echo '<a href="logout.php">ログアウト</a>';
-  ?>
-  <br /><br />
-    
+  <a href="login.php">ユーザー認証</a>　　　
+  <a href="regist.php">ユーザー登録</a><br /><br />
+
 <?php
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
@@ -32,38 +27,19 @@
 
   // データベースを選択する
   $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
-  
-  //クッキーがセットされたフォームのデータが送信された場合
-  $user_name = '';
-  $login_message = '';
-  
-  //ログイン時のコメント表示
-  if(isset($_COOKIE['user_name'])){
-    $user_name = $_COOKIE['user_name'];
-    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
-    echo $login_message;
-   }
 
-  
-  //タイトルの追加：フォームのデータが送信された場合に行う処理
+  //フォームのデータが送信された場合に行う処理
   if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
-    if(isset($_COOKIE['user_name'])){
 
     $title = $_POST['title'];
     
     if($title != "") {
-      $sql = "INSERT INTO $db.board(title,user_name) VALUES('$title','$user_name')";
+      $sql = "INSERT INTO $db.board(title) VALUES('$title')";
       $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
 	}
 	elseif($title == "") {
       echo '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
     }
-
-    }
-    else {
-    echo 'ログインしてください';
-    }
-    
   }
 
   //削除ボタンが押された場合に行う処理

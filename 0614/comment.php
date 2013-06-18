@@ -5,7 +5,7 @@
 </head>
 
 <body>
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <h1>ひとこと掲示板</h1>
 
 <?php
   if(isset($_SESSION['post_proc']) == true){
@@ -19,25 +19,15 @@
   $pass = "";
   $db = "training01";
 
-  // MySQLへ接続する
+<<<<<<< HEAD
+  // MySQLへ接続する 
+=======
+  // MySQLへ接続する  
+>>>>>>> up
   $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
 
   // データベースを選択する
   $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
-  
-  
-  //クッキーがセットされたフォームのデータが送信された場合にしようする変数の初期化
-  $user_name = '';
-  $login_message = '';
-  
-  //フォームのデータが送信された場合
-  if(isset($_COOKIE['user_name'])){
-    $user_name = $_COOKIE['user_name'];
-    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中　　' . '<a href="logout.php">ログアウト</a><br /><br />';
-    echo $login_message;
-    //echo ;
-   }
-   
 
   //削除ボタンが押された場合に行う処理
   $delete_id = '';
@@ -65,10 +55,9 @@
 
   while ($row = mysql_fetch_assoc($result)) {
     if($board ==  $row['id']) {
-      echo "【タイトル：";
+      echo "タイトル：";
       echo "<tr><td>";
-      //echo $row['title'];
-      echo $row['title'] . '】';
+      echo $row['title'];
       //echo $board;
       echo "</td><td>";
       echo '';  
@@ -84,7 +73,7 @@
     //echo $comment;
 
     if($comment != ""){
-      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
+      $sql = "INSERT INTO comment(board_id,contents) VALUES('$board','$comment')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
       echo '<br /><br />投稿内容・・・';
@@ -104,6 +93,19 @@
   }
 
 ?>
+
+
+  <div>
+  <!-- コメント投稿フォーム -->
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <?php echo $row['title']; ?><br /><br />
+      <label>コメント投稿：</label><br />
+      <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
+      <input type="hidden" value="<?php echo $board; ?>" name="board-id">
+      <input type="submit" value="コメント送信" name="submit" /><br /><br />
+  </form>
+  <!-- コメント投稿フォーム_END -->
+  </div>
 
   <!-- コメント一覧 -->
   <table border="1" width="400" cellspacing="0">
@@ -134,22 +136,8 @@
     }
   }
 ?>
+
 </table>
-
-  <div>
-  <!-- コメント投稿フォーム -->
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-    <?php echo $row['title']; ?><br /><br />
-      <label>コメント投稿：</label><br />
-      <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
-      <input type="hidden" value="<?php echo $board; ?>" name="board-id">
-      <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
-      <input type="submit" value="コメント送信" name="submit" /><br /><br />
-  </form>
-  <!-- コメント投稿フォーム_END -->
-  </div>
-
-
 <p><a href="index.php">HOMEに戻る</a></p>
 </body>
 </html>
