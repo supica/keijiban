@@ -10,7 +10,7 @@
   $pass = "";
   $db = "training01";
 
-  // MySQLへ接続する 
+  // MySQLへ接続する
   $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
 
   // データベースを選択する
@@ -23,13 +23,16 @@
   if(isset($_POST['submit'])){
    $user_name = $_POST['user_name'];
    $password = sha1($_POST['password']);
+   $pw = $_POST['password'];
+
      //ユーザー名とパスワードがどちらも入力されていたら
-     if($user_name != "" && $password != ""){
+     if($user_name != "" && $pw != ""){
      $sql = "SELECT * FROM users WHERE user_name = '$user_name' AND password = '$password'";
      $result = mysql_query($sql,$link);
        //ユーザー名とパスワードで問い合わせる
        if(mysql_num_rows($result) == 0){
          $sql = "INSERT INTO $db.users(id,user_name,password) VALUES(NULL,'$user_name','$password')";
+         $sql_c = "INSERT INTO $db.comment(user_name) VALUES('$user_name')";         
          $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
          setcookie('user_name','$user_name');
          header('Location: regist02.php');
@@ -43,6 +46,7 @@
      else{
      echo '<font color = "red">※入力内容が正しくありません。</font>';
      }
+   //mysql_close($link);
   }
 
 ?>
@@ -53,7 +57,8 @@
 </head>
 
 <body>
-  <h1>ひとこと掲示板</h1>
+<body>
+  <h1><a href="index.php">ひとこと掲示板</a></h1>
   <h2>ユーザー登録</h2>
 <div>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
