@@ -19,7 +19,11 @@
   $pass = "";
   $db = "training01";
 
+<<<<<<< HEAD
   // MySQLへ接続する  
+=======
+  // MySQLへ接続する 
+>>>>>>> 7245b1d781f6e224e9d31693f90c89cd85d80562
   $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
 
   // データベースを選択する
