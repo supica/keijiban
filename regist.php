@@ -1,3 +1,12 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>ひとこと掲示板</title>
+</head>
+
+<body>
+  <h1><a href="index.php">ひとこと掲示板</a></h1>
+
 <?php
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
@@ -23,13 +32,16 @@
   if(isset($_POST['submit'])){
    $user_name = $_POST['user_name'];
    $password = sha1($_POST['password']);
+   $pw = $_POST['password'];
+
      //ユーザー名とパスワードがどちらも入力されていたら
-     if($user_name != "" && $password != ""){
+     if($user_name != "" && $pw != ""){
      $sql = "SELECT * FROM users WHERE user_name = '$user_name' AND password = '$password'";
      $result = mysql_query($sql,$link);
        //ユーザー名とパスワードで問い合わせる
        if(mysql_num_rows($result) == 0){
          $sql = "INSERT INTO $db.users(id,user_name,password) VALUES(NULL,'$user_name','$password')";
+         $sql_c = "INSERT INTO $db.comment(user_name) VALUES('$user_name')";         
          $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
          setcookie('user_name','$user_name');
          header('Location: regist02.php');
@@ -43,17 +55,10 @@
      else{
      echo '<font color = "red">※入力内容が正しくありません。</font>';
      }
+   //mysql_close($link);
   }
 
 ?>
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>ひとこと掲示板</title>
-</head>
-
-<body>
-  <h1>ひとこと掲示板</h1>
   <h2>ユーザー登録</h2>
 <div>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >

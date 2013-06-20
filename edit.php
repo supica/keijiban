@@ -64,30 +64,33 @@
   $board = $_POST['board-id'];
 
   while ($row = mysql_fetch_assoc($result)) {
+  
     if($board ==  $row['id']) {
-      echo "【タイトル：";
-      echo "<tr><td>";
+      echo '【タイトル：';
+      echo '<tr><td>';
       //echo $row['title'];
-      echo $row['title'] . '】';
+      echo $row['title'];
+      //echo $row['board_id'];
+      echo '】';
       //echo $board;
-      echo "</td><td>";
+      echo '</td><td>';
       echo '';  
-      echo "</td></tr>";
+      echo '</td></tr>';
     }
   }
 
 
   //選択したタイトルにコメントが投稿された場合の処理
-  if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
+  if(isset($_POST['submit']) && $_POST['submit'] =='編集保存'){
 
     $comment = $_POST['comment'];
     //echo $comment;
 
     if($comment != ""){
-      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
+      $sql = "UPDATE comment SET contents = $comment WHERE id = delete_id ";      
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
-      echo '<br /><br />投稿内容・・・';
+      echo '<br /><br />編集内容・・・';
           echo "<tr><td>";
           echo "</td><td>";
           echo '「';
@@ -105,11 +108,12 @@
 
 ?>
 
-  <!-- コメント一覧 -->
-  <table border="1" width="400" cellspacing="0">
+  <!-- 選択したコメント -->
+<table border="1" width="400" cellspacing="0">
   <tr>
-    <th width="400">コメント一覧</th>
-    <th width="100">編集</th>
+    <th width="400">コメント内容</th>
+    <!--<th width="100">編集</th>-->
+    <th width="100">削除</th>
   </tr>
 
 <?php
@@ -119,45 +123,39 @@
   //データの取り出し()
   while ($row = mysql_fetch_assoc($result)) {
  
-    if($board == $row['board_id']){
+    if($board == $row['board_id'] && $_POST['delete_id'] == $row['id']){
       echo "<tr><td>";
       echo " <br />".$row['contents'];
       //echo " <br />".$row['board_id']."|".$row['contents'];
       echo "</td>";
       echo "<td>";
-      if($user_name == $row['user_name']){
-        //echo '<a href="edit.php">'.'編集・削除';      
-        echo '<form method="post" action="edit.php">'.
-             '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
-             '<input type="hidden" value="'.$board.'" name="board-id" />'.
-             '<input type="submit" value="編集・削除" name="delete_submit" />'.
-             '</form>';
-        echo "</tr></td>\n";
-      }
-      else {
-        echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-             '---'.
-             '</form>';  
-      }
+        if($user_name == $row['user_name']){
+          echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+               '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+               '<input type="hidden" value="'.$board.'" name="board-id" />'.
+               '<input type="submit" value="削除" name="delete_submit" />'.
+               '</form>';
+          //echo '削除しました';
+          echo "</td></tr>\n";
+        }
     }
   }
 ?>
 </table>
 
   <div>
-  <!-- コメント投稿フォーム -->
+  <!-- コメント編集フォーム -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <?php echo $row['title']; ?><br /><br />
-      <label>コメント投稿：</label><br />
+      <label><b>コメントを編集する：</b></label><br />
       <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
-      <input type="submit" value="コメント送信" name="submit" /><br /><br />
+      <input type="submit" value="編集内容を保存" name="submit" /><br /><br />
   </form>
   <!-- コメント投稿フォーム_END -->
   </div>
-
-
+  
 <p><a href="index.php">HOMEに戻る</a></p>
 </body>
 </html>
