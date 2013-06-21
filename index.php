@@ -9,19 +9,47 @@
 
   <a href="login.php">ログイン</a>　　　
   <a href="regist.php">ユーザー登録</a>　　　
-  <?php 
-  if(isset($_COOKIE['user_name']))
-  echo '<a href="logout.php">ログアウト</a>';
-  ?>
-  <br /><br />
-    
+
 <?php
+  //セッション時の処理
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
     header('Location:'.$_SERVER['PHP_SELF']);
   exit();
   }
+?>
 
+  <?php   
+  //ログインの判定：コメント表示
+  function login_check(){
+  
+    if(isset($_COOKIE['user_name'])){
+      $user_name = $_COOKIE['user_name'];
+      
+      echo '<a href="logout.php">ログアウト</a><br /><br />';
+      $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中';
+      echo $login_message;
+    }
+      //ログイン時に「タイトルを作る」を表示
+      function login_display(){
+      
+        if(isset($_COOKIE['user_name'])){
+          echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+               '<label for="title">タイトルを作る：</label><br />'.
+               '<textarea id="title" name="title" cols="50"></textarea><br />'.
+               '<input type="submit" value="送信" name="submit" /><br /><br />'.
+               '</form>';
+        }
+      }
+        //タイトルを選ぶの表示
+        //function login_select(){
+  }
+  login_check();
+  ?>
+  
+  <br /><br />
+    
+<?php
   $url = "localhost";
   $user = "root";
   $pass = "";
@@ -37,13 +65,6 @@
   $user_name = '';
   $login_message = '';
   
-  //ログインの判定：コメント表示
-  if(isset($_COOKIE['user_name'])){
-    $user_name = $_COOKIE['user_name'];
-    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
-    echo $login_message;
-   }
-
   
   //タイトルの追加：フォームのデータが送信された場合に行う処理
   if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
@@ -77,17 +98,10 @@
   
   <!-- タイトル一覧 -->
   <?php
-  //ログイン時に「タイトルを作る」を表示
-  if(isset($_COOKIE['user_name'])){
-    echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-         '<label for="title">タイトル：</label><br />'.
-         '<textarea id="title" name="title" cols="50"></textarea><br />'.
-         '<input type="submit" value="送信" name="submit" /><br /><br />'.
-         '</form>';
-  }
+  login_display();
   ?>
 
-  <table border="1" width="400" cellspacing="0" cellpadding="5">
+  <table border="1" width="400" cellspacing="0" cellpadding="0">
   <tr>
     <th width="400">タイトル一覧</th>
     <th width="100">削除</th>
@@ -99,6 +113,8 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 ?>
 <?php
+  //login_select();
+  //タイトルを選ぶの表示
   if(isset($_COOKIE['user_name'])){
     echo '<form method="post" action="comment.php" >タイトルを選ぶ：';
     echo '<select name="board-id">';    
@@ -110,15 +126,10 @@
         echo $row['title'];
         echo "</option>";
       }
-
     echo '<input type="submit" value="選択" name="select_submit" /><br /><br />';
     echo '</select>';
     echo '</form>';
-
-      //データの取り出し：セレクトボード
-
   }
-
 ?>
   
 

@@ -51,7 +51,6 @@
 
 ?>
 
-
 <?php
   // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
   $sql = "SELECT * FROM board";
@@ -70,12 +69,11 @@
       //echo $row['title'];
       echo $row['title'] . '】';
       //echo $board;
-      echo "</td><td>";
-      echo '';  
+      //echo "</td><td>";
+      //echo '';  
       echo "</td></tr>";
     }
   }
-
 
   //選択したタイトルにコメントが投稿された場合の処理
   if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
@@ -109,6 +107,7 @@
   <table border="1" width="400" cellspacing="0">
   <tr>
     <th width="400">コメント一覧</th>
+    <th width="100">name</th>
     <th width="100">編集</th>
   </tr>
 
@@ -121,9 +120,13 @@
  
     if($board == $row['board_id']){
       echo "<tr><td>";
-      echo " <br />".$row['contents'];
-      //echo " <br />".$row['board_id']."|".$row['contents'];
+      echo $row['contents'];
       echo "</td>";
+      
+      echo "<td>";
+      echo $row['user_name'];
+      echo "</td>";
+ 
       echo "<td>";
       if($user_name == $row['user_name']){
         //echo '<a href="edit.php">'.'編集・削除';      
