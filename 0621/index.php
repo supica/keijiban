@@ -1,49 +1,3 @@
-<?php
-  //データベース設定
-  require_once('dbsettings.php');
-
-  // MySQLへ接続する
-  $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
-  //mysql_query($link,"SET NAMES utf8");
-  
-  // データベースを選択する
-  $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
-    
-  //クッキーがセットされたフォームのデータが送信された場合
-  $user_name = '';
-  $login_message = '';
-  
-  
-  //タイトルの追加：フォームのデータが送信された場合に行う処理
-  if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
-    if(isset($_COOKIE['user_name'])){
-      $title = $_POST['title'];
-      
-        if($title != "") {
-          $sql = "INSERT INTO $db.board(title,user_name) VALUES('$title','$user_name')";
-          $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-        }
-	    elseif($title == "") {
-          echo '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
-        }
-    }
-    else {
-      echo '<font color = "red">※ログインしてください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
-    }
-    
-  }
-
-  //削除ボタンが押された場合に行う処理
-  $delete_id = '';
-
-  if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
-    $delete_id = $_POST['delete_id'];
- 
-    $sql = "DELETE FROM board WHERE id = $delete_id";
-    $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-  }
-?>
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -60,8 +14,6 @@
   //セッション時の処理
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
-    header("HTTP/1.1 303 See Other");
-    //header('Location:'.$_SERVER['PHP_SELF'], true, 303);
     header('Location:'.$_SERVER['PHP_SELF']);
   exit();
   }
@@ -97,7 +49,52 @@
   
   <br /><br />
     
+<?php
+  $url = "localhost";
+  $user = "root";
+  $pass = "";
+  $db = "training01";
 
+  // MySQLへ接続する
+  $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
+
+  // データベースを選択する
+  $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
+  
+  //クッキーがセットされたフォームのデータが送信された場合
+  $user_name = '';
+  $login_message = '';
+  
+  
+  //タイトルの追加：フォームのデータが送信された場合に行う処理
+  if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
+    if(isset($_COOKIE['user_name'])){
+      $title = $_POST['title'];
+      
+        if($title != "") {
+          $sql = "INSERT INTO $db.board(title,user_name) VALUES('$title','$user_name')";
+          $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+        }
+	    elseif($title == "") {
+          echo '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
+        }
+    }
+    else {
+      echo '<font color = "red">※ログインしてください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
+    }
+    
+  }
+
+  //削除ボタンが押された場合に行う処理
+  $delete_id = '';
+
+  if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
+    $delete_id = $_POST['delete_id'];
+ 
+    $sql = "DELETE FROM board WHERE id = $delete_id";
+    $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+  }
+?>
   
   <!-- タイトル一覧 -->
   <?php

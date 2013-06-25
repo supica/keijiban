@@ -14,15 +14,16 @@
   exit();
   }
 
-  //データベース設定
-  require_once('dbsettings.php');
+  $url = "localhost";
+  $user = "root";
+  $pass = "";
+  $db = "training01";
 
   // MySQLへ接続する
-  $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
-  //mysql_query($link,"SET NAMES utf8");
-  
+  $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
+
   // データベースを選択する
-  $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
+  $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
   
   
   //変数の初期化/クッキーがセットされたフォームのデータが送信された場合に使用

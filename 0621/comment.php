@@ -10,16 +10,20 @@
 <?php
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
-    header("HTTP/1.1 301 Moved Premanently");
     header('Location:'.$_SERVER['PHP_SELF']);
   exit();
   }
 
-  //データベース設定
-  require_once('dbsettings.php');
+  $url = "localhost";
+  $user = "root";
+  $pass = "";
+  $db = "training01";
 
-  $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
-  $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
+  // MySQLへ接続する
+  $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
+
+  // データベースを選択する
+  $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
   
   
   //クッキーがセットされたフォームのデータが送信された場合にしようする変数の初期化
@@ -53,7 +57,6 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
   //データの取り出し(タイトルを表示)
-
   $board = '';
   $comment = '';
 
@@ -72,7 +75,32 @@
     }
   }
 
-//コメント投稿
+  //選択したタイトルにコメントが投稿された場合の処理
+  if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
+
+    $comment = $_POST['comment'];
+    //echo $comment;
+
+    if($comment != ""){
+      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
+      $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+
+      echo '<br /><br />投稿内容・・・';
+          echo "<tr><td>";
+          echo "</td><td>";
+          echo '「';
+          echo "<tr><td>";
+          echo $comment;
+          echo '」';
+          echo "</td><td>";
+          //echo '';  
+          echo "</td></tr>";
+     }
+     elseif($comment == "") {
+          echo '<font color = "red"><br /><br />※コメントを入力してください</font>';
+     }
+  }
+
 ?>
 
   <!-- コメント一覧 -->
@@ -121,7 +149,7 @@
 
   <div>
   <!-- コメント投稿フォーム -->
-  <form method="post" action="store_comment.php">
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <?php echo $row['title']; ?><br /><br />
       <label>コメント投稿：</label><br />
       <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
