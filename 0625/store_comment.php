@@ -12,8 +12,12 @@
   //データベース設定
   require_once('dbsettings.php');
   
+   // 出力する文字コードの定義
+   //define('Charset', 'UTF-8');
+ 
   // MySQLへ接続する
   $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
+  //mysql_query($link,"SET NAMES utf8");
   
   // データベースを選択する
   $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
@@ -33,10 +37,27 @@
     if($comment != ""){
       $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-    }
-      $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/comment.php'.'?board-id='.$board;
-      header("HTTP/1.1 301 Moved Permanently");
-      header('Location: '.$url);
-      exit;
+
+      /*echo '<br /><br />投稿内容・・・';
+          echo "<tr><td>";
+          echo "</td><td>";
+          echo '「';
+          echo "<tr><td>";
+          echo $comment;
+          echo '」';
+          echo "</td><td>";
+          //echo '';  
+          echo "</td></tr>";*/
+     }
+     //elseif($comment == "") {
+          //echo '<font color = "red"><br /><br />※コメントを入力してください</font>';
+     //}
+    //exit();
   }
+      $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])'.'?board-id=& $board';
+      header("HTTP/1.1 301 Moved Permanently");
+      //header("location: comment.php");
+      header('Location: '.$url);
+          
+      exit;
 ?>
