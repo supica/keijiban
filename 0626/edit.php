@@ -14,11 +14,18 @@
   exit();
   }
 
+  //データベース設定
   require_once('dbsettings.php');
 
+  // MySQLへ接続する
   $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
+  //mysql_query($link,"SET NAMES utf8");
+  
+  // データベースを選択する
   $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
   
+  
+  //変数の初期化/クッキーがセットされたフォームのデータが送信された場合に使用
   $user_name = '';
   $login_message = '';
   
@@ -85,12 +92,27 @@
     if($comment != ""){
       $sql = "UPDATE comment SET contents = '$comment' WHERE id = $delete_id";      
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+
         echo '<font color = "red">　　※コメントを編集しました<br /><br /></font>';
-    }
-    elseif($comment == "") {
-        echo '<font color = "red">　　※コメントを入力してください<br /><br /></font>';
-    }
-  }
+        
+      /*echo '<br /><br />編集内容・・・';
+          echo "<tr><td>";
+          echo "</td><td>";
+          echo '「';
+          echo "<tr><td>";
+          echo $comment;
+          echo '」';
+          echo "</td><td>";
+          //echo '';  
+          echo "</td></tr>";*/
+     }
+     elseif($comment == "") {
+          echo '<font color = "red">　　※コメントを入力してください<br /><br /></font>';
+     }
+     
+     
+     
+}
 
 ?>
 
@@ -120,6 +142,7 @@
     if($board == $row['board_id'] && $_POST['delete_id'] == $row['id']){
       echo "<tr><td>";
       echo " <br />".$row['contents'];
+      //echo " <br />".$row['board_id']."|".$row['contents'];
       echo "</td>";
       echo "<td>";
       $rec_comment = $row['contents'];

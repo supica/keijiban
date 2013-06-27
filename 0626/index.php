@@ -44,9 +44,6 @@
 ?>
 
 <?php
-  $user_name = '';
-  $login_message = '';
-
   // ログイン時：コメント表示
   if(login_check($_COOKIE,'user_name') == true){
     $user_name = $_COOKIE['user_name'];      
@@ -72,7 +69,10 @@
 
 <br /><br />
   
-<?php  
+<?php
+  $user_name = '';
+  $login_message = '';
+  
   // タイトル送信時：タイトルの追加
   if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
     if(login_check() == true){
@@ -80,8 +80,6 @@
       if($title != "") {
         $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title','$user_name')";
         $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-        header('Location:'.$_SERVER['PHP_SELF']);
-      exit();
       }
 	  elseif($title == "") {
 	    $login_message = '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';

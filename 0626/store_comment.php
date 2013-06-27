@@ -8,12 +8,16 @@
   exit();
   }
 
-  //define('Charset', 'UTF-8');
+  define('Charset', 'UTF-8');
   //データベース設定
   require_once('dbsettings.php');
   
+  // MySQLへ接続する
   $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
+  
+  // データベースを選択する
   $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
+
 
   //選択したタイトルにコメントが投稿された場合の処理
   if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
