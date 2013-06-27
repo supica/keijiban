@@ -29,6 +29,7 @@
     if($comment != ""){
       $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+      
     }
       $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/comment.php'.'?board-id='.$board;
       header("HTTP/1.1 301 Moved Permanently");
