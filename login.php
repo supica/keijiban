@@ -6,16 +6,15 @@
   exit();
   }
 
-  $url = "localhost";
-  $user = "root";
-  $pass = "";
-  $db = "training01";
+  //データベース設定
+  require_once('dbsettings.php');
 
-  // MySQLへ接続する 
-  $link = mysql_connect($url,$user,$pass) or die("MySQLへの接続に失敗しました。");
-
+  // MySQLへ接続する
+  $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
+  //mysql_query($link,"SET NAMES utf8");
+  
   // データベースを選択する
-  $sdb = mysql_select_db($db,$link) or die("データベースの選択に失敗しました。");
+  $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
 
   $user_name = '';
   $error_message = '';
@@ -58,11 +57,6 @@
     }
   }
   
-  //パスワードが一致しているかどうか
-  //どちらも一致していたらデータベースから取り出し
-  //COOKIEで保持する
-  //ログアウト
-
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
