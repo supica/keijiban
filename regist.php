@@ -22,7 +22,7 @@
   $user_name = '';
   $error_message = '';
 
-  //登録画面からユーザー名とパスワードが送信された時
+  // 登録画面からユーザー名とパスワードが送信された時
   if(isset($_POST['submit'])){
    $user_name = $_POST['user_name'];
    $password = sha1($_POST['password']);

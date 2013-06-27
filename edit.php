@@ -23,7 +23,7 @@
   $login_message = '';
   
   //フォームのデータが送信された場合
-  if(isset($_COOKIE['user_name'])){
+  if (isset($_COOKIE['user_name'])){
     $user_name = $_COOKIE['user_name'];
     $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中　　' . '<a href="logout.php">ログアウト</a><br /><br />';
     echo $login_message;

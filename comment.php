@@ -25,7 +25,7 @@
   <h1><a href="index.php">ひとこと掲示板</a></h1>
 
 <?php
-  //ログイン：判定
+  // ログイン：判定
   function login_check(){
     if(isset($_COOKIE['user_name'])){
       return true;

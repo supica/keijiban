@@ -1,5 +1,5 @@
 <?php
-  // セッション時の処理
+  // セッション時の処理 
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
     //header("HTTP/1.1 303 See Other");
