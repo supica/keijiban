@@ -57,11 +57,6 @@
     }
   }
   
-  //パスワードが一致しているかどうか
-  //どちらも一致していたらデータベースから取り出し
-  //COOKIEで保持する
-  //ログアウト
-
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
