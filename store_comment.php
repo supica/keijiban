@@ -21,8 +21,9 @@
     $comment = '';
     $user_name = '';
     $board = '';
+    $reg_sts = '';
     
-    $comment = $_POST['comment'];
+    $comment = trim($_POST['comment']);
     $user_name = $_COOKIE['user_name'];
     $board = $_POST['board-id'];
 
@@ -30,8 +31,16 @@
       $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
       
+        if($result == true){
+        $reg_sts = 1;
+        }
+        else{
+        $reg_sts = -1;
+        }
+    }else{
+      $reg_sts = 2;
     }
-      $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/comment.php'.'?board-id='.$board;
+      $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/comment.php'.'?board-id='.$board.'&reg_sts='.$reg_sts;
       header("HTTP/1.1 301 Moved Permanently");
       header('Location: '.$url);
       exit;

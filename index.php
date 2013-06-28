@@ -77,6 +77,7 @@
   if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
     if(login_check() == true){
     $title = $_POST['title'];
+    //$title = strlen($_POST['title']);
       if($title != "") {
         $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title','$user_name')";
         $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -152,7 +153,6 @@
   while ($row = mysql_fetch_assoc($result)) {
     if(isset($_POST['select_submit'])=='選択'){
       $board = $_POST['board-id'];
-
       if($board ==  $row['id']) {
         echo "<tr><td>";
         echo $row['title'];
@@ -160,25 +160,24 @@
         echo '';
         echo "</td></tr>";
       }   
-    }
-    else {
-     echo "<tr><td>";
-     echo $row['title'];
-     echo "</td><td>";
-     echo '';
-     echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-          '</form>';
-     if($user_name == $row['user_name']){
-       echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-            '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
-            '<input type="submit" value="削除" name="delete_submit" />'.
-            '</form>';  
-       echo "</td></tr>\n";
-     }else {
-       echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-            '---'.
-            '</form>';  
-     }
+    }else{
+        echo "<tr><td>";
+        echo $row['title'];
+        echo "</td><td>";
+        echo '';
+        echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+             '</form>';
+       if($user_name == $row['user_name']){
+         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+              '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+              '<input type="submit" value="削除" name="delete_submit" />'.
+              '</form>';  
+         echo "</td></tr>\n";
+       }else {
+         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+              '---'.
+              '</form>';  
+       }
    }
   }
 ?>

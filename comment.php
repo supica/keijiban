@@ -50,9 +50,32 @@
     $login_message =  '<font color = "red">※ログインして下さい</font>';
       echo $login_message;
   }
-?>
 
-<?php
+  $reg_sts = '';
+
+  if(isset($_GET['reg_sts'])){
+  $reg_sts = $_GET['reg_sts'];
+  
+  switch ($reg_sts){
+      case -1:
+          $disp_sts = '<font color = "red">※登録できませんでした。<br /></font>';
+          break;
+      case 1:
+          $disp_sts = '<font color = "blue">※コメントを登録しました。<br /></font>';
+          break;
+      case 2:
+          $disp_sts = '<font color = "red">※コメントを入力してください。<br /></font>';
+          break;
+      case 0:
+          $disp_sts = '';
+          break;
+      default:
+          $disp_sts = '<font color = "red">※!?<br /></font>';
+          break;
+  }
+  echo $disp_sts.'<br />';
+  }
+
   // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
   //データの取り出し(タイトルを表示)
   $sql = "SELECT * FROM board";
@@ -74,7 +97,7 @@
   }
   
   // コメント投稿時：画面表示
-  if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
+  /*if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
     if($comment != ""){
       echo '<br /><br />投稿内容・・・';
           echo "<tr><td>";
@@ -89,7 +112,7 @@
      elseif($comment == "") {
           echo '<font color = "red"><br /><br />※コメントを入力してください</font>';
      }
-   }
+   }*/
 ?>
 
 <?php
