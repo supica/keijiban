@@ -66,6 +66,9 @@
       case 2:
           $disp_sts = '<font color = "red">※コメントを入力してください。<br /></font>';
           break;
+      case 3:
+         $disp_sts = '<font color = "red">※コメントは全角30文字以内で入力してください。<br /></font>';
+          break;
       case 0:
           $disp_sts = '';
           break;
@@ -82,7 +85,6 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
   $board = '';
-  $comment = '';
 
   $board = $_GET['board-id'];
   
@@ -95,33 +97,24 @@
       echo "</td></tr>";
     }
   }
-  
-  // コメント投稿時：画面表示
-  /*if(isset($_POST['submit']) && $_POST['submit'] =='コメント送信'){
-    if($comment != ""){
-      echo '<br /><br />投稿内容・・・';
-          echo "<tr><td>";
-          echo "</td><td>";
-          echo '「';
-          echo "<tr><td>";
-          echo $comment;
-          echo '」';
-          echo "</td><td>";
-          echo "</td></tr>";
-     }
-     elseif($comment == "") {
-          echo '<font color = "red"><br /><br />※コメントを入力してください</font>';
-     }
-   }*/
-?>
 
-<?php
+
+  $comment = '';
+  $comment_error = '';
+
+  //投稿コメントが30文字以上の時、コメントを30文字まで表示
+  if($reg_sts == 3){
+    if(isset($_GET['comment'])){
+      $comment = $_GET['comment'];
+      $comment_error = mb_strimwidth($comment,0,60,'','utf-8');
+    }
+  }
 ?>
 
   <!-- コメント一覧 -->
-  <table border="1" width="400" cellspacing="0">
+  <table border="1" width="425" cellspacing="0">
   <tr>
-    <th width="400">コメント一覧</th>
+    <th width="800">コメント一覧</th>
     <th width="100">name</th>
     <th width="100">編集</th>
   </tr>
@@ -166,8 +159,8 @@
   <!-- コメント投稿フォーム -->
   <form method="post" action="store_comment.php">
     <?php echo $row['title']; ?><br /><br />
-      <label>コメント投稿：</label><br />
-      <textarea id="comment" name="comment" cols="50" rows="6"></textarea><br />
+      <label>コメント投稿：　<全角30文字以内></label><br />
+      <textarea id="comment" name="comment" cols="60" rows="2"><?php echo $comment_error; ?></textarea><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
       <input type="submit" value="コメント送信" name="submit" /><br /><br />

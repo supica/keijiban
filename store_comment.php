@@ -22,12 +22,20 @@
     $user_name = '';
     $board = '';
     $reg_sts = '';
+    $str = '';
     
     $comment = trim($_POST['comment']);
     $user_name = $_COOKIE['user_name'];
     $board = $_POST['board-id'];
+    
+    //文字数チェック：30文字
+    $str = $comment;
+    $str_mb = mb_strlen($str,'UTF-8');
+     // echo $str_mb;
 
     if($comment != ""){
+      if($str_mb <= 30){
+
       $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
       
@@ -37,10 +45,13 @@
         else{
         $reg_sts = -1;
         }
+      }else{
+        $reg_sts = 3;
+      }
     }else{
       $reg_sts = 2;
     }
-      $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/comment.php'.'?board-id='.$board.'&reg_sts='.$reg_sts;
+      $url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/comment.php'.'?board-id='.$board.'&reg_sts='.$reg_sts.'&comment='.$comment;
       header("HTTP/1.1 301 Moved Permanently");
       header('Location: '.$url);
       exit;

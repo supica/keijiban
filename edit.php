@@ -95,9 +95,9 @@
 ?>
 
   <!-- 選択したコメント -->
-<table border="1" width="400" cellspacing="0">
+<table border="1" width="425" cellspacing="0">
   <tr>
-    <th width="400">コメント内容</th>
+    <th width="800">コメント内容</th>
     <!--<th width="100">編集</th>-->
     <th width="100">削除</th>
   </tr>
@@ -163,7 +163,7 @@
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <?php echo $row['title']; ?><br /><br />
       <label><b>コメントを編集する：</b></label><br />
-      <textarea id="comment" name="comment" cols="50" rows="6"><?php echo $rec_comment; ?></textarea><br />
+      <textarea id="comment" name="comment" cols="60" rows="2"><?php echo $rec_comment; ?></textarea><br />
       <input type="hidden" value="<?php echo $comment_id; ?>" name="delete_id" />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">

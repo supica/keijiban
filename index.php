@@ -62,8 +62,8 @@
   function login_display(){
     if(login_check() == true){
       echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-      '<label for="title">タイトルを作る：</label><br />'.
-      '<textarea id="title" name="title" cols="50"></textarea><br />'.
+      '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />'.
+      '<textarea id="title" name="title" cols="60"></textarea><br />'.
       '<input type="submit" value="送信" name="submit" /><br /><br />'.
       '</form>';
     }
@@ -78,11 +78,21 @@
     if(login_check() == true){
     $title = $_POST['title'];
     //$title = strlen($_POST['title']);
-      if($title != "") {
+    
+    $str = $title;
+    $str_mb = mb_strlen($str,'UTF-8');
+    //$title_error = '';
+    
+      if($title != ""){
+        if($str_mb <= 20){
         $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title','$user_name')";
         $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
         header('Location:'.$_SERVER['PHP_SELF']);
       exit();
+      }else{
+        //$title_error = mb_strimwidth($str,0,40,'','utf-8');
+	    echo '<font color = "red">※20文字以内で入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
+      }
       }
 	  elseif($title == "") {
 	    $login_message = '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
@@ -113,9 +123,9 @@
   login_display();
   ?>
 
-  <table border="1" width="400" cellspacing="0" cellpadding="0">
+  <table border="1" width="425" cellspacing="0" cellpadding="0">
   <tr>
-    <th width="400">タイトル一覧</th>
+    <th width="800">タイトル一覧</th>
     <th width="100">削除</th>
   </tr>
 
