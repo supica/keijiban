@@ -98,14 +98,15 @@
     }
   }
 
+  session_start();
 
   $comment = '';
   $comment_error = '';
 
   //投稿コメントが30文字以上の時、コメントを30文字まで表示
   if($reg_sts == 3){
-    if(isset($_GET['comment'])){
-      $comment = $_GET['comment'];
+    if(isset($_SESSION["comment"])){
+      $comment = $_SESSION["comment"];
       $comment_error = mb_strimwidth($comment,0,60,'','utf-8');
     }
   }
