@@ -37,7 +37,7 @@
 ?>
 
 <?php
-  // ログイン時：コメント表示
+  // ログイン時：「～さんでログイン中」表示
   $user_name = '';
   $login_message = '';
   
@@ -50,12 +50,44 @@
     $login_message =  '<font color = "red">※ログインして下さい</font>';
       echo $login_message;
   }
+  //セッションを開始する
+  session_start();
+
+  // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
+  //データの取り出し(タイトルを表示)
+  $sql = "SELECT * FROM board";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+    
+  // 選択したタイトル名を表示
+  $board = '';
+  
+  if(isset($_GET['board-id'])){
+    $board = $_GET['board-id'];
+  }elseif(isset($_SESSION['board-id'])){
+    $board = $_SESSION['board-id'];
+  }else{
+    echo '<br /><p><a href="index.php">HOMEに戻る</a></p>';
+  exit;
+  }
+ 
+
+  while ($row = mysql_fetch_assoc($result)) {
+    if($board == $row['id']) {
+      echo "【タイトル：";
+      echo "<tr><td>";
+      echo $row['title'] . '】';
+      echo "</td></tr>";
+    }
+  }
+
 
   $reg_sts = '';
 
-  if(isset($_GET['reg_sts'])){
-  $reg_sts = $_GET['reg_sts'];
+  if(isset($_SESSION['reg_sts'])){
   
+  $reg_sts = $_SESSION['reg_sts'];  
+  //$board = $_SESSION['board-id'];
+
   switch ($reg_sts){
       case -1:
           $disp_sts = '<font color = "red">※登録できませんでした。<br /></font>';
@@ -79,27 +111,6 @@
   echo $disp_sts.'<br />';
   }
 
-  // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
-  //データの取り出し(タイトルを表示)
-  $sql = "SELECT * FROM board";
-  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-  
-  $board = '';
-
-  $board = $_GET['board-id'];
-  
-  // 選択したタイトル名を表示
-  while ($row = mysql_fetch_assoc($result)) {
-    if($board ==  $row['id']) {
-      echo "【タイトル：";
-      echo "<tr><td>";
-      echo $row['title'] . '】';
-      echo "</td></tr>";
-    }
-  }
-
-  session_start();
-
   $comment = '';
   $comment_error = '';
 
@@ -107,9 +118,12 @@
   if($reg_sts == 3){
     if(isset($_SESSION["comment"])){
       $comment = $_SESSION["comment"];
+      $board = $_SESSION['board-id'];
       $comment_error = mb_strimwidth($comment,0,60,'','utf-8');
     }
   }
+  
+  session_unset();
 ?>
 
   <!-- コメント一覧 -->
@@ -126,7 +140,7 @@
 
   //データの取り出し()
   while ($row = mysql_fetch_assoc($result)) {
- 
+      
     if($board == $row['board_id']){
       echo "<tr><td>";
       echo $row['contents'];
@@ -138,7 +152,6 @@
  
       echo "<td>";
       if($user_name == $row['user_name']){
-        //echo '<a href="edit.php">'.'編集・削除';      
         echo '<form method="post" action="edit.php">'.
              '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
              '<input type="hidden" value="'.$board.'" name="board-id" />'.

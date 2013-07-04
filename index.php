@@ -47,7 +47,7 @@
   $user_name = '';
   $login_message = '';
 
-  // ログイン時：コメント表示
+  // ログイン時：「～さんでログイン中」表示
   if(login_check($_COOKIE,'user_name') == true){
     $user_name = $_COOKIE['user_name'];      
     echo '<a href="logout.php">ログアウト</a><br /><br />';
@@ -154,6 +154,8 @@
   
 
 <?php
+  //session_start();
+
   // タイトルの表示・＜クエリ(検索条件)を送信する＞
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
@@ -162,7 +164,7 @@
 
   while ($row = mysql_fetch_assoc($result)) {
     if(isset($_POST['select_submit'])=='選択'){
-      $board = $_POST['board-id'];
+      $board = $_GET['board-id'];
       if($board ==  $row['id']) {
         echo "<tr><td>";
         echo $row['title'];

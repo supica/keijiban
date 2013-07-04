@@ -119,7 +119,7 @@
 
     if($board == $row['board_id'] && $_POST['delete_id'] == $row['id']){
       echo "<tr><td>";
-      echo " <br />".$row['contents'];
+      echo " ".$row['contents'];
       echo "</td>";
       echo "<td>";
       $rec_comment = $row['contents'];
