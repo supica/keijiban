@@ -31,6 +31,8 @@
     $board = '';
     $reg_sts = '';
     $str = '';
+    $str_mb = '';
+    
     
     $comment = trim($_SESSION['comment']);
     $user_name = $_COOKIE['user_name'];
@@ -39,12 +41,11 @@
     //文字数チェック：30文字
     $str = mb_convert_kana($comment,"A","utf-8");
     $str_mb = mb_strlen($str,'UTF-8');
-    //echo $str_mb;
-    //exit;
+    $_SESSION['str_mb'] = $str_mb;
 
     if($comment != ""){
       if($str_mb <= 30){
-
+      $comment = mb_convert_kana($comment,"KV","utf-8");
       $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
       

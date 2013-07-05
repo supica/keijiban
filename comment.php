@@ -113,16 +113,20 @@
 
   $comment = '';
   $comment_error = '';
+  $comment_rec = '';
 
   //投稿コメントが30文字以上の時、コメントを30文字まで表示
+  //(半角英数字はカナ変換→チェック→半角英数字に変換)
   if($reg_sts == 3){
     if(isset($_SESSION["comment"])){
       $comment = $_SESSION["comment"];
-      $board = $_SESSION['board-id'];
-      $comment_error = mb_strimwidth($comment,0,60,'','utf-8');
+      $comment_check = mb_convert_kana($comment,"AKV","utf-8");
+      //$board = $_SESSION['board-id'];
+      $comment_errors = mb_strimwidth($comment_check,0,60,'','utf-8');
+      $comment_error = mb_convert_kana($comment_errors,"a","utf-8");
     }
+    $_SESSION['comment_rec'] = $comment_rec;
   }
-  
   session_unset();
 ?>
 
