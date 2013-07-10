@@ -32,6 +32,7 @@
     $reg_sts = '';
     $str = '';
     $str_mb = '';
+    $comment_chars = '';
     
     
     $comment = trim($_SESSION['comment']);
@@ -42,11 +43,12 @@
     $str = mb_convert_kana($comment,"A","utf-8");
     $str_mb = mb_strlen($str,'UTF-8');
     $_SESSION['str_mb'] = $str_mb;
+    $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
 
     if($comment != ""){
       if($str_mb <= 30){
-      $comment = mb_convert_kana($comment,"KV","utf-8");
-      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
+      $comment = mb_convert_kana($comment,"AKV","utf-8");
+      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment_chars','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
       
         if($result == true){

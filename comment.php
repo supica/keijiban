@@ -119,8 +119,10 @@
   //(半角英数字はカナ変換→チェック→半角英数字に変換)
   if($reg_sts == 3){
     if(isset($_SESSION["comment"])){
+     
       $comment = $_SESSION["comment"];
       $comment_check = mb_convert_kana($comment,"AKV","utf-8");
+      $comment_chars = htmlspecialchars($comment_check,ENT_QUOTES);
       //$board = $_SESSION['board-id'];
       $comment_errors = mb_strimwidth($comment_check,0,60,'','utf-8');
       $comment_error = mb_convert_kana($comment_errors,"a","utf-8");

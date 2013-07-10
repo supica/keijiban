@@ -29,7 +29,6 @@
     echo $login_message;
     //echo ;
    }
-   
 
   //削除ボタンが押された場合に行う処理
   $delete_id = '';
@@ -53,12 +52,20 @@
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
+  if(!isset($_POST['board-id'])){
+    echo '<font color = "red">※コメント編集は、トップページの"タイトルを選ぶ"を選択後、<br />
+    　コメント一覧の「編集・削除ボタン」よりお進みください</font>';
+    echo '<p><a href="index.php">HOMEに戻る</a></p>';
+  exit;
+  }
+
   //データの取り出し(タイトルを表示)
   $board = '';
   $comment = '';
+  $str_mb = '';
 
   $board = $_POST['board-id'];
-
+  
   while ($row = mysql_fetch_assoc($result)) {
   
     if($board ==  $row['id']) {
@@ -75,23 +82,36 @@
     }
   }
 
-
   //選択したコメントが編集された場合の処理
   if(isset($_POST['submit']) && $_POST['submit'] =='編集内容を保存'){
 
-    $comment = $_POST['comment'];
+    $comment = trim($_POST['comment']);
     $delete_id = $_POST['delete_id'];
+    $str = mb_convert_kana($comment,"AKV","utf-8");
+    $str_mb = mb_strlen($str,'UTF-8');
+    $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
 
     if($comment != ""){
-      $sql = "UPDATE comment SET contents = '$comment' WHERE id = $delete_id";      
-      $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-        echo '<font color = "red">　　※コメントを編集しました<br /><br /></font>';
-    }
+    
+      if($str_mb <= 30){
+        
+        $sql = "UPDATE comment SET contents = '$comment_chars' WHERE id = $delete_id";
+        $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+          echo '<font color = "red">　　※コメントを編集しました<br /><br /></font>';
+      }else{
+      $comment_check = mb_convert_kana($comment,"AKV","utf-8");
+      $comment_errors = mb_strimwidth($comment_check,0,60,'','utf-8');
+      $comment_error = mb_convert_kana($comment_errors,"a","utf-8");
+        //$_SESSION['comment_rec'] = $comment_rec;
+          echo '<font color = "red">　　※コメントは30字以内で編集してください<br /><br /></font>';
+         // echo $comment_error;
+        //exit;
+      }
+    }    
     elseif($comment == "") {
         echo '<font color = "red">　　※コメントを入力してください<br /><br /></font>';
     }
   }
-
 ?>
 
   <!-- 選択したコメント -->
@@ -163,7 +183,14 @@
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <?php echo $row['title']; ?><br /><br />
       <label><b>コメントを編集する：</b></label><br />
-      <textarea id="comment" name="comment" cols="60" rows="2"><?php echo $rec_comment; ?></textarea><br />
+      <!--<textarea id="comment" name="comment" cols="60" rows="2"><?php echo $rec_comment; ?></textarea><br />-->
+      <textarea id="comment" name="comment" cols="60" rows="2"><?php
+       if($str_mb > 30){
+         echo $comment_error;
+       }else{
+         echo $rec_comment;
+       }
+       ?></textarea><br />
       <input type="hidden" value="<?php echo $comment_id; ?>" name="delete_id" />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
