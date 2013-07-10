@@ -77,7 +77,7 @@
   if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
     if(login_check() == true){
     $title = $_POST['title'];
-    //$title = strlen($_POST['title']);
+    $title_chars = htmlspecialchars($title,ENT_QUOTES);
     
     $str = $title;
     $str_mb = mb_strlen($str,'UTF-8');
@@ -85,7 +85,7 @@
     
       if($title != ""){
         if($str_mb <= 20){
-        $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title','$user_name')";
+        $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title_chars','$user_name')";
         $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
         header('Location:'.$_SERVER['PHP_SELF']);
       exit();

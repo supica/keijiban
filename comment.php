@@ -122,10 +122,10 @@
      
       $comment = $_SESSION["comment"];
       $comment_check = mb_convert_kana($comment,"AKV","utf-8");
-      $comment_chars = htmlspecialchars($comment_check,ENT_QUOTES);
       //$board = $_SESSION['board-id'];
       $comment_errors = mb_strimwidth($comment_check,0,60,'','utf-8');
       $comment_error = mb_convert_kana($comment_errors,"a","utf-8");
+      $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
     }
     $_SESSION['comment_rec'] = $comment_rec;
   }
