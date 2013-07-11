@@ -51,48 +51,38 @@
   if(login_check($_COOKIE,'user_name') == true){
     $user_name = $_COOKIE['user_name'];      
     echo '<a href="logout.php">ログアウト</a><br /><br />';
-    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中';
+    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
     echo $login_message;
   }else {
-    $login_message =  '<font color = "red">※ログインして下さい</font>';
+    $login_message =  '<font color = "red">※ログインして下さい<br /><br /></font>';
     echo $login_message;
   }
 
-  // ログイン時：タイトル投稿欄 表示
-  function login_display(){
-    if(login_check() == true){
-      echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-      '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />'.
-      '<textarea id="title" name="title" cols="60"></textarea><br />'.
-      '<input type="submit" value="送信" name="submit" /><br /><br />'.
-      '</form>';
-    }
-  }
-?>
-
-<br /><br />
   
-<?php  
+  $str_mb = '';
+  
   // タイトル送信時：タイトルの追加
-  if(isset($_POST['submit']) && $_POST['submit']=='送信'){   
+  if(isset($_POST['submit']) && $_POST['submit']=='送信'){
     if(login_check() == true){
     $title = $_POST['title'];
-    $title_chars = htmlspecialchars($title,ENT_QUOTES);
+    $title_chars = htmlspecialchars($title,ENT_QUOTES); //htmlタグを無効化
     
-    $str = $title;
-    $str_mb = mb_strlen($str,'UTF-8');
+    //$str = $title;
+    $str_mb = mb_strlen($title,'UTF-8'); //文字数をカウント
     //$title_error = '';
     
       if($title != ""){
         if($str_mb <= 20){
         $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title_chars','$user_name')";
         $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+        //echo '<font color = "blue">※タイトルを登録しました　　　</font>'<br /><br />';
         header('Location:'.$_SERVER['PHP_SELF']);
       exit();
-      }else{
-        //$title_error = mb_strimwidth($str,0,40,'','utf-8');
+        }else{
+        $title_error = mb_substr($title,0,20,'utf-8');  //20文字で丸める
+        echo $title_error;
 	    echo '<font color = "red">※20文字以内で入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
-      }
+        }
       }
 	  elseif($title == "") {
 	    $login_message = '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
@@ -105,6 +95,21 @@
     }
     
   }
+
+  // タイトル投稿欄の表示
+  $title_error = '';
+  
+  function login_display(){
+    if(login_check() == true){
+      echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+      '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />'.
+      '<textarea id="title" name="title" cols="60"></textarea><br />'.
+      //'<textarea id="title" name="title" cols="60">'.$_POST['title'].'</textarea><br />'.
+      '<input type="submit" value="送信" name="submit" /><br /><br />'.
+      '</form>';
+    }
+  }
+
 
   //削除ボタン：押された時
   $delete_id = '';

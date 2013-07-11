@@ -30,24 +30,17 @@
     $user_name = '';
     $board = '';
     $reg_sts = '';
-    $str = '';
-    $str_mb = '';
     $comment_chars = '';
-    
     
     $comment = trim($_SESSION['comment']);
     $user_name = $_COOKIE['user_name'];
     $board = $_SESSION['board-id'];
     
-    //文字数チェック：30文字
-    $str = mb_convert_kana($comment,"A","utf-8");
-    $str_mb = mb_strlen($str,'UTF-8');
-    $_SESSION['str_mb'] = $str_mb;
+    $comment_str = mb_strlen($comment,'utf-8'); //文字数をカウント
     $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
 
     if($comment != ""){
-      if($str_mb <= 30){
-      $comment = mb_convert_kana($comment,"AKV","utf-8");
+      if($comment_str <= 30){
       $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment_chars','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
       

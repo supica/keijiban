@@ -121,11 +121,9 @@
     if(isset($_SESSION["comment"])){
      
       $comment = $_SESSION["comment"];
-      $comment_check = mb_convert_kana($comment,"AKV","utf-8");
-      //$board = $_SESSION['board-id'];
-      $comment_errors = mb_strimwidth($comment_check,0,60,'','utf-8');
-      $comment_error = mb_convert_kana($comment_errors,"a","utf-8");
-      $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
+      $comment_str = mb_strlen($comment,'utf-8'); //文字数をカウント
+      $comment_error = mb_substr($comment,0,30,'utf-8'); //文字数で丸め
+      $comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
     }
     $_SESSION['comment_rec'] = $comment_rec;
   }

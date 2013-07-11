@@ -40,8 +40,6 @@
  
     $sql = "DELETE FROM comment WHERE id = $delete_id";
     $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-    
-   //echo $delete_comment;
   }
 
 ?>
@@ -62,7 +60,7 @@
   //データの取り出し(タイトルを表示)
   $board = '';
   $comment = '';
-  $str_mb = '';
+  $comment_str = '';
 
   $board = $_POST['board-id'];
   
@@ -87,25 +85,20 @@
 
     $comment = trim($_POST['comment']);
     $delete_id = $_POST['delete_id'];
-    $str = mb_convert_kana($comment,"AKV","utf-8");
-    $str_mb = mb_strlen($str,'UTF-8');
+    $comment_str = mb_strlen($comment,'utf-8'); //文字数をカウント
     $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
 
     if($comment != ""){
     
-      if($str_mb <= 30){
+      if($comment_str <= 30){
         
         $sql = "UPDATE comment SET contents = '$comment_chars' WHERE id = $delete_id";
         $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
           echo '<font color = "red">　　※コメントを編集しました<br /><br /></font>';
       }else{
-      $comment_check = mb_convert_kana($comment,"AKV","utf-8");
-      $comment_errors = mb_strimwidth($comment_check,0,60,'','utf-8');
-      $comment_error = mb_convert_kana($comment_errors,"a","utf-8");
-        //$_SESSION['comment_rec'] = $comment_rec;
+        $comment_error = mb_substr($comment,0,30,'utf-8'); //文字数で丸め
+        $comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
           echo '<font color = "red">　　※コメントは30字以内で編集してください<br /><br /></font>';
-         // echo $comment_error;
-        //exit;
       }
     }    
     elseif($comment == "") {
@@ -183,9 +176,8 @@
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <?php echo $row['title']; ?><br /><br />
       <label><b>コメントを編集する：</b></label><br />
-      <!--<textarea id="comment" name="comment" cols="60" rows="2"><?php echo $rec_comment; ?></textarea><br />-->
       <textarea id="comment" name="comment" cols="60" rows="2"><?php
-       if($str_mb > 30){
+       if($comment_str > 30){
          echo $comment_error;
        }else{
          echo $rec_comment;
