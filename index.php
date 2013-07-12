@@ -2,21 +2,69 @@
   // セッション時の処理 
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
-    //header("HTTP/1.1 303 See Other");
     header("HTTP/1.1 301 Moved Premanently");
     header('Location:'.$_SERVER['PHP_SELF']);
   exit();
   }
-?>
 
-<?php
   // データベース設定
   require_once('dbsettings.php');
-
   // MySQLへ接続する
   $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");  
   // データベースを選択する
   $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
+
+  $user_name = '';
+  $login_message = '';
+  $str_mb = '';
+  $title_20 = '';
+  $delete_id = '';
+  $board = '';
+
+  login_check(); //ログイン認証
+  
+  // ログイン中の表示
+  if(login_check() == true){
+    $user_name = $_COOKIE['user_name'];      
+    $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
+  }else {
+    $login_message =  '<font color = "red">※ログインして下さい<br /><br /></font>';
+  }
+
+  // 「タイトルを作る」から送信ボタンが押された時
+  if(isset($_POST['submit']) && $_POST['submit']=='送信'){
+
+      $title = $_POST['title'];
+      $title_chars = htmlspecialchars($title,ENT_QUOTES); //htmlタグを無効化
+      $str_mb = mb_strlen($title,'UTF-8'); //文字数をカウント
+
+      if($title != ""){
+          if($str_mb <= 20){
+            $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title_chars','$user_name')";
+            $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+          header('Location:'.$_SERVER['PHP_SELF']);
+          exit();
+          }else{
+            $title_20 = mb_substr($title,0,20,'utf-8');  //20文字で丸める
+   	        $login_message = '<font color = "red">※20文字以内で入力してください　　　</font>'.
+   	                         '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
+          }
+      }elseif($title == ""){
+	    $login_message = '<font color = "red">※登録するタイトルを入力してください　　　</font>'.
+	                     '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
+  }else {
+	$login_message = '<font color = "red">※ログインしてください　　　</font>'.
+	                 '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
+    }
+  }
+
+  //「タイトル一覧」から削除ボタンが押された時
+    if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
+      $delete_id = $_POST['delete_id'];
+      $sql = "DELETE FROM board WHERE id = $delete_id";
+      $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+    }
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
@@ -27,106 +75,12 @@
 
 <body>
   <h1>ひとこと掲示板</h1>
-
   <a href="login.php">ログイン</a>　　　
   <a href="regist.php">ユーザー登録</a>　　　
 
-<?php   
-  //ログイン：判定
-  function login_check(){
-    if(isset($_COOKIE['user_name'])){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  login_check();
-?>
-
-<?php
-  $user_name = '';
-  $login_message = '';
-
-  // ログイン時：「～さんでログイン中」表示
-  if(login_check($_COOKIE,'user_name') == true){
-    $user_name = $_COOKIE['user_name'];      
-    echo '<a href="logout.php">ログアウト</a><br /><br />';
-    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
-    echo $login_message;
-  }else {
-    $login_message =  '<font color = "red">※ログインして下さい<br /><br /></font>';
-    echo $login_message;
-  }
-
-  
-  $str_mb = '';
-  
-  // タイトル送信時：タイトルの追加
-  if(isset($_POST['submit']) && $_POST['submit']=='送信'){
-    if(login_check() == true){
-    $title = $_POST['title'];
-    $title_chars = htmlspecialchars($title,ENT_QUOTES); //htmlタグを無効化
-    
-    //$str = $title;
-    $str_mb = mb_strlen($title,'UTF-8'); //文字数をカウント
-    //$title_error = '';
-    
-      if($title != ""){
-        if($str_mb <= 20){
-        $sql = "INSERT INTO training01.board(title,user_name) VALUES('$title_chars','$user_name')";
-        $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-        //echo '<font color = "blue">※タイトルを登録しました　　　</font>'<br /><br />';
-        header('Location:'.$_SERVER['PHP_SELF']);
-      exit();
-        }else{
-        $title_error = mb_substr($title,0,20,'utf-8');  //20文字で丸める
-        echo $title_error;
-	    echo '<font color = "red">※20文字以内で入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
-        }
-      }
-	  elseif($title == "") {
-	    $login_message = '<font color = "red">※登録するタイトルを入力してください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
-        echo $login_message;
-      }
-    }
-    else {
-	  $login_message = '<font color = "red">※ログインしてください　　　</font>' . '<a href="index.php">HOMEに戻る</a><br /><br />';
-      echo $login_message;
-    }
-    
-  }
-
-  // タイトル投稿欄の表示
-  $title_error = '';
-  
-  function login_display(){
-    if(login_check() == true){
-      echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-      '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />'.
-      '<textarea id="title" name="title" cols="60"></textarea><br />'.
-      //'<textarea id="title" name="title" cols="60">'.$_POST['title'].'</textarea><br />'.
-      '<input type="submit" value="送信" name="submit" /><br /><br />'.
-      '</form>';
-    }
-  }
-
-
-  //削除ボタン：押された時
-  $delete_id = '';
-  
-  if(login_check() == true){
-    if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
-    $delete_id = $_POST['delete_id'];
-    $sql = "DELETE FROM board WHERE id = $delete_id";
-    $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-    }
-  }
-?>
-
-  <!-- タイトル一覧 -->
   <?php
-  login_display();
-  ?>
+    echo $login_message;
+   ?>
 
   <table border="1" width="425" cellspacing="0" cellpadding="0">
   <tr>
@@ -134,12 +88,24 @@
     <th width="100">削除</th>
   </tr>
 
-  <!-- 一覧からタイトルを選ぶ  -->
 <?php
+  //「タイトルを作る」の文字数判定
+  if(login_check() == true){
+    echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
+    echo '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />';
+    echo '<textarea id="title" name="title" cols="60" >';
+      if($str_mb > 20){
+        echo $title_20;
+      }
+    echo '</textarea><br />';
+    echo '<input type="submit" value="送信" name="submit" /><br /><br />';
+    echo '</form>';
+  }
+
+  //「タイトルを選ぶ」から選択ボタンが押された時
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
-  //タイトル:選択
   if(login_check() == true){
     echo '<form method="get" action="comment.php" >タイトルを選ぶ：';
     echo '<select name="board-id">';    
@@ -155,17 +121,10 @@
     echo '</select>';
     echo '</form>';
   }
-?>
-  
 
-<?php
-  //session_start();
-
-  // タイトルの表示・＜クエリ(検索条件)を送信する＞
+  // 「タイトル一覧」の表示
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-  
-  $board = '';
 
   while ($row = mysql_fetch_assoc($result)) {
     if(isset($_POST['select_submit'])=='選択'){
@@ -182,25 +141,35 @@
         echo $row['title'];
         echo "</td><td>";
         echo '';
-        echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-             '</form>';
+        echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
+        echo '</form>';
        if($user_name == $row['user_name']){
-         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-              '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
-              '<input type="submit" value="削除" name="delete_submit" />'.
-              '</form>';  
+         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
+         echo '<input type="hidden" value="'.$row['id'].'" name="delete_id" />';
+         echo '<input type="submit" value="削除" name="delete_submit" />';
+         echo '</form>';  
          echo "</td></tr>\n";
        }else {
-         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-              '---'.
-              '</form>';  
+         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
+         echo '---';
+         echo '</form>';
        }
-   }
+    }
   }
 ?>
-
- 
   </table>
 <!-- <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->
 </body>
 </html>
+
+<?php
+  //ログイン：判定
+  function login_check(){
+    if(isset($_COOKIE['user_name'])){
+      return true;
+    }else{
+      return false;
+    }
+  }
+?>
+
