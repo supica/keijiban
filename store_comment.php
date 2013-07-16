@@ -38,10 +38,12 @@
     
     $comment_str = mb_strlen($comment,'utf-8'); //文字数をカウント
     $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
+    $comment = nl2br($comment_chars);
+
 
     if($comment != ""){
-      if($comment_str <= 30){
-      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment_chars','$user_name')";
+      if($comment_str <= 150){
+      $sql = "INSERT INTO comment(board_id,contents,user_name) VALUES('$board','$comment','$user_name')";
       $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
       
         if($result == true){

@@ -42,10 +42,7 @@
     $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
   }
 
-?>
 
-
-<?php
   // 選択したのコメントを表示／クエリ(検索条件)を送信する
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
@@ -69,11 +66,8 @@
     if($board ==  $row['id']) {
       echo '【タイトル：';
       echo '<tr><td>';
-      //echo $row['title'];
       echo $row['title'];
-      //echo $row['board_id'];
       echo '】';
-      //echo $board;
       echo '</td><td>';
       echo '';  
       echo '</td></tr>';
@@ -87,18 +81,19 @@
     $delete_id = $_POST['delete_id'];
     $comment_str = mb_strlen($comment,'utf-8'); //文字数をカウント
     $comment_chars = htmlspecialchars($comment,ENT_QUOTES);
+    $comment = nl2br($comment_chars);
 
     if($comment != ""){
     
-      if($comment_str <= 30){
+      if($comment_str <= 150){
         
-        $sql = "UPDATE comment SET contents = '$comment_chars' WHERE id = $delete_id";
+        $sql = "UPDATE comment SET contents = '$comment' WHERE id = $delete_id";
         $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
           echo '<font color = "red">　　※コメントを編集しました<br /><br /></font>';
       }else{
-        $comment_error = mb_substr($comment,0,30,'utf-8'); //文字数で丸め
+        $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
         $comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
-          echo '<font color = "red">　　※コメントは30字以内で編集してください<br /><br /></font>';
+          echo '<font color = "red">　　※コメントは150字以内で編集してください<br /><br /></font>';
       }
     }    
     elseif($comment == "") {
@@ -111,7 +106,6 @@
 <table border="1" width="425" cellspacing="0">
   <tr>
     <th width="800">コメント内容</th>
-    <!--<th width="100">編集</th>-->
     <th width="100">削除</th>
   </tr>
 
@@ -119,9 +113,7 @@
   if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){    
    echo $delete_comment;
   }
-?>
 
-<?php
   $sql = "SELECT * FROM comment";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
@@ -135,7 +127,9 @@
       echo " ".$row['contents'];
       echo "</td>";
       echo "<td>";
-      $rec_comment = $row['contents'];
+      $rec = $row['contents'];
+      $rec_comment = str_replace(array('<br />','<br>'), "", $rec);
+      //$rec_comment = str_replace(array('<br />','<br>'), "\n", $rec);
       
       $comment_id = '';
       
@@ -177,7 +171,7 @@
     <?php echo $row['title']; ?><br /><br />
       <label><b>コメントを編集する：</b></label><br />
       <textarea id="comment" name="comment" cols="60" rows="2"><?php
-       if($comment_str > 30){
+       if($comment_str > 150){
          echo $comment_error;
        }else{
          echo $rec_comment;

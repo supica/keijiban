@@ -99,7 +99,7 @@
           $disp_sts = '<font color = "red">※コメントを入力してください。<br /></font>';
           break;
       case 3:
-         $disp_sts = '<font color = "red">※コメントは全角30文字以内で入力してください。<br /></font>';
+         $disp_sts = '<font color = "red">※コメントは全角150文字以内で入力してください。<br /></font>';
           break;
       case 0:
           $disp_sts = '';
@@ -115,15 +115,17 @@
   $comment_error = '';
   $comment_rec = '';
 
-  //投稿コメントが30文字以上の時、コメントを30文字まで表示
+  //投稿コメントが150文字以上の時、コメントを150文字まで表示
   //(半角英数字はカナ変換→チェック→半角英数字に変換)
   if($reg_sts == 3){
     if(isset($_SESSION["comment"])){
      
       $comment = $_SESSION["comment"];
       $comment_str = mb_strlen($comment,'utf-8'); //文字数をカウント
-      $comment_error = mb_substr($comment,0,30,'utf-8'); //文字数で丸め
+      $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
       $comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
+      $comment = nl2br($comment_chars); //<br />タグを追加
+
     }
     $_SESSION['comment_rec'] = $comment_rec;
   }
@@ -133,7 +135,7 @@
   <!-- コメント一覧 -->
   <table border="1" width="425" cellspacing="0">
   <tr>
-    <th width="800">コメント一覧</th>
+    <th width="225">コメント一覧</th>
     <th width="100">name</th>
     <th width="100">編集</th>
   </tr>
@@ -177,8 +179,8 @@
   <!-- コメント投稿フォーム -->
   <form method="post" action="store_comment.php">
     <?php echo $row['title']; ?><br /><br />
-      <label>コメント投稿：　<全角30文字以内></label><br />
-      <textarea id="comment" name="comment" cols="60" rows="2"><?php echo $comment_error; ?></textarea><br />
+      <label>コメント投稿：　<全角150文字以内></label><br />
+      <textarea id="comment" name="comment" cols="60" rows="5"><?php echo $comment_error; ?></textarea><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
       <input type="submit" value="コメント送信" name="submit" /><br /><br />
