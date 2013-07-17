@@ -1,55 +1,38 @@
 <?php
+  // セッション時の処理 
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
     header("HTTP/1.1 301 Moved Premanently");
     header('Location:'.$_SERVER['PHP_SELF']);
   exit();
   }
-?>
 
-<?php
   // データベース設定
   require_once('dbsettings.php');
-
-  $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");
+  // MySQLへ接続する
+  $link = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or die("MySQLへの接続に失敗しました。");  
+  // データベースを選択する
   $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
-?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>ひとこと掲示板:コメント投稿</title>
-</head>
+  $board = '';
+  $reg_sts = '';
+  $comment = '';
+  $comment_error = '';
+  $comment_rec = '';
+  $title_disp = '';
+  $disp_sts = '';
 
-<body>
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
-
-<?php
-  // ログイン：判定
-  function login_check(){
-    if(isset($_COOKIE['user_name'])){
-      return true;
-    }else{
-      return false;
-    }
-  }
-  login_check(); 
-?>
-
-<?php
-  // ログイン時：「～さんでログイン中」表示
-  $user_name = '';
-  $login_message = '';
+  //login_check(); //ログイン認証
   
+  // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
-    $login_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中　　';
-      echo $login_message;
-      echo '<a href="logout.php">ログアウト</a><br /><br />';
+    $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中　';
   }else {
-    $login_message =  '<font color = "red">※ログインして下さい</font>';
-      echo $login_message;
+    $login_message =  '<font color = "red">※ログインして下さい　</font>';
   }
+
   //セッションを開始する
   session_start();
 
@@ -58,9 +41,7 @@
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
     
-  // 選択したタイトル名を表示
-  $board = '';
-  
+  // 選択したタイトル名を表示  
   if(isset($_GET['board-id'])){
     $board = $_GET['board-id'];
   }elseif(isset($_SESSION['board-id'])){
@@ -69,19 +50,12 @@
     echo '<br /><p><a href="index.php">HOMEに戻る</a></p>';
   exit;
   }
- 
 
   while ($row = mysql_fetch_assoc($result)) {
     if($board == $row['id']) {
-      echo "【タイトル：";
-      echo "<tr><td>";
-      echo $row['title'] . '】';
-      echo "</td></tr>";
+      $title_disp = '【タイトル：'.'<tr><td>'.$row['title'] . '】'. '</td></tr>';
     }
   }
-
-
-  $reg_sts = '';
 
   if(isset($_SESSION['reg_sts'])){
   
@@ -108,12 +82,8 @@
           $disp_sts = '<font color = "red">※!?<br /></font>';
           break;
   }
-  echo $disp_sts.'<br />';
+  //echo $disp_sts.'<br />';
   }
-
-  $comment = '';
-  $comment_error = '';
-  $comment_rec = '';
 
   //投稿コメントが150文字以上の時、コメントを150文字まで表示
   //(半角英数字はカナ変換→チェック→半角英数字に変換)
@@ -125,13 +95,31 @@
       $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
       $comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
       $comment = nl2br($comment_chars); //<br />タグを追加
-
     }
     $_SESSION['comment_rec'] = $comment_rec;
   }
   session_unset();
 ?>
 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>ひとこと掲示板</title>
+</head>
+
+<body>
+  <h1>ひとこと掲示板</h1>
+  <a href="login.php">ログイン</a>　　　
+  <a href="regist.php">ユーザー登録</a>　　　
+
+  <?php
+    echo $login_message;
+    echo $disp_sts;
+   ?>
+
+  <!-- 選択したコメント -->
+  <br /><br />
+<?php echo $title_disp; ?>
   <!-- コメント一覧 -->
   <table border="1" width="425" cellspacing="0">
   <tr>
@@ -192,3 +180,14 @@
 <p><a href="index.php">HOMEに戻る</a></p>
 </body>
 </html>
+
+<?php
+  //ログイン：判定
+  function login_check(){
+    if(isset($_COOKIE['user_name'])){
+      return true;
+    }else{
+      return false;
+    }
+  }
+?>
