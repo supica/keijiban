@@ -21,6 +21,7 @@
   $comment_rec = '';
   $title_disp = '';
   $disp_sts = '';
+  $comment_list = '';
 
   //login_check(); //ログイン認証
   
@@ -57,10 +58,38 @@
     }
   }
 
-  if(isset($_SESSION['reg_sts'])){
-  
+  //データの取り出し()
+  $sql = "SELECT * FROM comment";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+
+  while ($row = mysql_fetch_assoc($result)) {
+      
+    if($board == $row['board_id']){
+      $comment_list = "<tr><td>".
+                      $row['contents'].
+                      "</td>".
+                      "<td>".
+                      $row['user_name'].
+                      "</td>".
+                      "<td>";
+      if($user_name == $row['user_name']){
+      $comment_list .= '<form method="post" action="edit.php">'.
+                       '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+                       '<input type="hidden" value="'.$board.'" name="board-id" />'.
+                       '<input type="submit" value="編集・削除" name="delete_submit" />'.
+                       '</form>'.
+                       "</tr></td>\n";
+      }
+      else {
+      $comment_list .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+                       '---'.
+                       '</form>';  
+      }
+    }
+  }
+
+  if(isset($_SESSION['reg_sts'])){  
   $reg_sts = $_SESSION['reg_sts'];  
-  //$board = $_SESSION['board-id'];
 
   switch ($reg_sts){
       case -1:
@@ -128,39 +157,8 @@
     <th width="100">編集</th>
   </tr>
 
-<?php
-  $sql = "SELECT * FROM comment";
-  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+<?php echo $comment_list; ?>
 
-  //データの取り出し()
-  while ($row = mysql_fetch_assoc($result)) {
-      
-    if($board == $row['board_id']){
-      echo "<tr><td>";
-      echo $row['contents'];
-      echo "</td>";
-      
-      echo "<td>";
-      echo $row['user_name'];
-      echo "</td>";
- 
-      echo "<td>";
-      if($user_name == $row['user_name']){
-        echo '<form method="post" action="edit.php">'.
-             '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
-             '<input type="hidden" value="'.$board.'" name="board-id" />'.
-             '<input type="submit" value="編集・削除" name="delete_submit" />'.
-             '</form>';
-        echo "</tr></td>\n";
-      }
-      else {
-        echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-             '---'.
-             '</form>';  
-      }
-    }
-  }
-?>
 </table>
 
   <div>
@@ -175,7 +173,6 @@
   </form>
   <!-- コメント投稿フォーム_END -->
   </div>
-
 
 <p><a href="index.php">HOMEに戻る</a></p>
 </body>

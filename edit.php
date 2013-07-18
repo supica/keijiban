@@ -138,7 +138,6 @@
       echo "<td>";
       $rec = $row['contents'];
       $rec_comment = str_replace(array('<br />','<br>'), "", $rec);
-      //$rec_comment = str_replace(array('<br />','<br>'), "\n", $rec);
       
       $comment_id = '';
       

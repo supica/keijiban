@@ -20,6 +20,9 @@
   $title_20 = '';
   $delete_id = '';
   $board = '';
+  $title_make = '';
+  $title_choose = '';
+  $title_disp = '';
 
   login_check(); //ログイン認証
   
@@ -47,6 +50,7 @@
           exit();
           }else{
             $title_20 = mb_substr($title,0,20,'utf-8');  //20文字で丸める
+              //echo $title_20;
    	        $login_message = '<font color = "red">※20文字以内で入力してください　　　</font>'.
    	                         '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
           }
@@ -57,6 +61,74 @@
 	$login_message = '<font color = "red">※ログインしてください　　　</font>'.
 	                 '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
     }
+  }
+
+  //「タイトルを作る」の文字数判定
+  if(login_check() == true){
+    $title_make = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+                  '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />'.
+                  '<textarea id="title" name="title" cols="60" >';
+      if($str_mb > 20){
+        $title_make .= $title_20;
+      }
+    $title_make .= '</textarea><br />'.
+                  '<input type="submit" value="送信" name="submit" />'.
+                  '</form>';
+  }
+
+  //「タイトルを選ぶ」から選択ボタンが押された時
+  $sql = "SELECT * FROM board";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+
+  if(login_check() == true){
+    $title_choose = '<form method="get" action="comment.php" >タイトルを選ぶ：'.
+                    '<select name="board-id">';    
+  
+    while ($row = mysql_fetch_assoc($result)) {
+      $title_choose .= "<option value=\"".
+                       $row['id'].
+                       "\">".
+                       $row['title'].
+                       "</option>";
+    }
+    $title_choose .= '<input type="submit" value="選択" name="select_submit" />'.
+                     '</select>'.
+                     '</form>';
+  }
+
+  // 「タイトル一覧」の表示
+  $sql = "SELECT * FROM board";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+
+  while ($row = mysql_fetch_assoc($result)) {
+    if(isset($_POST['select_submit'])=='選択'){
+      $board = $_GET['board-id'];
+      if($board ==  $row['id']) {
+        $title_disp = "<tr><td>".
+                      $row['title'].
+                      "</td><td>".
+                      ''.
+                      "</td></tr>";
+      }   
+    }else{
+      $title_disp .= "<tr><td>".
+                     $row['title'].
+                     "</td><td>".
+                     ''.
+                     '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+                     '</form>';
+        if($user_name == $row['user_name']){
+          $title_disp .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+                         '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+                         '<input type="submit" value="削除" name="delete_submit" />'.
+                         '</form>'.  
+                         "</td></tr>\n";
+        }else {
+          $title_disp .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+                         '---'.
+                         '</form>';
+        }
+     }
   }
 
   //「タイトル一覧」から削除ボタンが押された時
@@ -80,6 +152,8 @@
 
   <?php
     echo $login_message;
+    echo $title_make;
+    echo $title_choose;
    ?>
 
   <table border="1" width="425" cellspacing="0" cellpadding="0">
@@ -88,75 +162,10 @@
     <th width="100">削除</th>
   </tr>
 
-<?php
-  //「タイトルを作る」の文字数判定
-  if(login_check() == true){
-    echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
-    echo '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />';
-    echo '<textarea id="title" name="title" cols="60" >';
-      if($str_mb > 20){
-        echo $title_20;
-      }
-    echo '</textarea><br />';
-    echo '<input type="submit" value="送信" name="submit" /><br /><br />';
-    echo '</form>';
-  }
+  <?php
+    echo $title_disp;
+  ?>
 
-  //「タイトルを選ぶ」から選択ボタンが押された時
-  $sql = "SELECT * FROM board";
-  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-
-  if(login_check() == true){
-    echo '<form method="get" action="comment.php" >タイトルを選ぶ：';
-    echo '<select name="board-id">';    
-  
-    while ($row = mysql_fetch_assoc($result)) {
-      echo "<option value=\"";
-      echo $row['id'];
-      echo "\">";
-      echo $row['title'];
-      echo "</option>";
-    }
-    echo '<input type="submit" value="選択" name="select_submit" /><br /><br />';
-    echo '</select>';
-    echo '</form>';
-  }
-
-  // 「タイトル一覧」の表示
-  $sql = "SELECT * FROM board";
-  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-
-  while ($row = mysql_fetch_assoc($result)) {
-    if(isset($_POST['select_submit'])=='選択'){
-      $board = $_GET['board-id'];
-      if($board ==  $row['id']) {
-        echo "<tr><td>";
-        echo $row['title'];
-        echo "</td><td>";
-        echo '';
-        echo "</td></tr>";
-      }   
-    }else{
-        echo "<tr><td>";
-        echo $row['title'];
-        echo "</td><td>";
-        echo '';
-        echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
-        echo '</form>';
-       if($user_name == $row['user_name']){
-         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
-         echo '<input type="hidden" value="'.$row['id'].'" name="delete_id" />';
-         echo '<input type="submit" value="削除" name="delete_submit" />';
-         echo '</form>';  
-         echo "</td></tr>\n";
-       }else {
-         echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">';
-         echo '---';
-         echo '</form>';
-       }
-    }
-  }
-?>
   </table>
 <!-- <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->
 </body>
