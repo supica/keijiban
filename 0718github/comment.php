@@ -65,7 +65,7 @@
   while ($row = mysql_fetch_assoc($result)) {
       
     if($board == $row['board_id']){
-      $comment_list .= "<tr><td>".
+      $comment_list = "<tr><td>".
                       $row['contents'].
                       "</td>".
                       "<td>".
@@ -81,7 +81,9 @@
                        "</tr></td>\n";
       }
       else {
-      $comment_list .= '---';  
+      $comment_list .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+                       '---'.
+                       '</form>';  
       }
     }
   }
@@ -148,7 +150,7 @@
   <br /><br />
 <?php echo $title_disp; ?>
   <!-- コメント一覧 -->
-  <table border="1" width="425" cellspacing="0" cellpadding="6">
+  <table border="1" width="425" cellspacing="0">
   <tr>
     <th width="225">コメント一覧</th>
     <th width="100">name</th>

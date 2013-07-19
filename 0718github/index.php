@@ -19,7 +19,6 @@
   $str_mb = '';
   $title_20 = '';
   $delete_id = '';
-  $delete_title = '';
   $board = '';
   $title_make = '';
   $title_choose = '';
@@ -63,16 +62,6 @@
 	                 '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
     }
   }
-
-  //「タイトル一覧」から削除ボタンが押された時
-    if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
-      $delete_id = $_POST['delete_id'];
-      $delete_title = '<font color="red">　※選択したタイトルを削除しました。</font>';
-      $result = $delete_title;
-      
-      $sql = "DELETE FROM board WHERE id = $delete_id";
-      $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-    }
 
   //「タイトルを作る」の文字数判定
   if(login_check() == true){
@@ -141,6 +130,13 @@
         }
      }
   }
+
+  //「タイトル一覧」から削除ボタンが押された時
+    if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
+      $delete_id = $_POST['delete_id'];
+      $sql = "DELETE FROM board WHERE id = $delete_id";
+      $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+    }
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
@@ -158,10 +154,7 @@
     echo $login_message;
     echo $title_make;
     echo $title_choose;
-    //echo $delete_title;
-  ?>
-
-  <?php echo $delete_title; ?>
+   ?>
 
   <table border="1" width="425" cellspacing="0" cellpadding="0">
   <tr>
@@ -169,7 +162,9 @@
     <th width="100">削除</th>
   </tr>
 
-  <?php echo $title_disp; ?>
+  <?php
+    echo $title_disp;
+  ?>
 
   </table>
 <!-- <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->

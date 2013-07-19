@@ -22,8 +22,6 @@
   $comment = '';
   $comment_str = '';
   $edit_message = '';
-  $comment_edit = '';
-  $comment_over = '';
 
 
   // ログイン中の表示
@@ -36,7 +34,17 @@
   }
 
 
-  // 選択したコメントを表示／クエリ(検索条件)を送信する
+  //削除ボタンが押された場合に行う処理
+  if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
+    $delete_id = $_POST['delete_id'];
+    $delete_comment = '<font color="red">　※コメントを削除しました。</font>';
+ 
+    $sql = "DELETE FROM comment WHERE id = $delete_id";
+    $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
+  }
+
+
+  // 選択したのコメントを表示／クエリ(検索条件)を送信する
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
@@ -56,16 +64,6 @@
       $title_disp = '【タイトル：'.'<tr><td>'.$row['title'].'】'.'</td><td>'.''.'</td></tr>';
     }
   }
-
-  //削除ボタンが押された場合に行う処理
-  if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
-    $delete_id = $_POST['delete_id'];
-    $delete_comment = '<font color="red">　※コメントを削除しました。</font>';
- 
-    $sql = "DELETE FROM comment WHERE id = $delete_id";
-    $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
-  }
-
 
   //選択したコメントが編集された場合の処理
   if(isset($_POST['submit']) && $_POST['submit'] =='編集内容を保存'){
@@ -92,62 +90,6 @@
         $edit_message = '<font color = "red">　　※コメントを入力してください</font>';
     }
   }
-
-  $sql = "SELECT * FROM comment";
-  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-
-  //コメントの取り出し
-  $rec_cnt = 0;
-  $rec_comment = '';
-  while ($row = mysql_fetch_assoc($result)) {
-
-    if($board == $row['board_id'] && $_POST['delete_id'] == $row['id']){
-      $comment_edit = "<tr><td>".
-                      " ".$row['contents'].
-                      "</td>".
-                      "<td>";
-      $rec = $row['contents'];
-      $rec_comment = str_replace(array('<br />','<br>'), "", $rec);
-      
-      $comment_id = '';
-      
-        if($user_name == $row['user_name']){
-          $comment_edit .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                           '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
-                           '<input type="hidden" value="'.$board.'" name="board-id" />'.
-                           '<input type="submit" value="削除" name="delete_submit" />'.
-                           '</form>';
-          $comment_id = $row['id'];
-          $rec_cnt++;
-          $comment_edit .= "</td></tr>\n";
-
-          $comment_over = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                          $row['title'].
-                          '<br /><br />'.
-                          '<label>'.
-                          '<b>コメントを編集する：</b>'.
-                          '</label>'.
-                          '<br />'.
-                          '<textarea id="comment" name="comment" cols="60" rows="2">';
-                           if($comment_str > 150){
-                            $comment_over .= $comment_error;
-                            }else{
-                            $comment_over .= $rec_comment;
-                            }
-          $comment_over .= '</textarea><br />'.
-                           '<input type="hidden" value="'.$comment_id.'" name="delete_id" />'.
-                           '<input type="hidden" value="'.$board.'" name="board-id">'.
-                           '<input type="hidden" value="'.$user_name.'" name="user_name">'.
-                           '<input type="submit" value="編集内容を保存" name="submit" /><br /><br />'.
-                           '</form>';
-        }
-    }
-  }
-              if(0 == $rec_cnt){
-                $comment_edit .=  '<td colspan="2">'.
-                                  'データはありません。'.
-                                  '</td>';
-              } 
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
@@ -158,31 +100,98 @@
 
 <body>
   <h1>ひとこと掲示板</h1>
+
   <a href="login.php">ログイン</a>　　　
   <a href="regist.php">ユーザー登録</a>　　　
 
 <?php 
   echo $login_message;
   echo $edit_message;
-  echo $delete_comment;
+
+  if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){    
+   echo $delete_comment;
+  }
  ?>
 
-  <!-- 選択したコメントの表示 -->
+  <!-- 選択したコメント -->
 <br /><br />
-
 <?php echo $title_disp; ?>
-
-<table border="1" width="425" cellspacing="0" cellpadding="6">
+<table border="1" width="425" cellspacing="0">
   <tr>
     <th width="800">コメント内容</th>
     <th width="100">削除</th>
   </tr>
-  <?php echo $comment_edit; ?>
-</table>
 
+<?php
+  $sql = "SELECT * FROM comment";
+  $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
+
+  //コメントの取り出し
+  $rec_cnt = 0;
+  $rec_comment = '';
+  while ($row = mysql_fetch_assoc($result)) {
+
+    if($board == $row['board_id'] && $_POST['delete_id'] == $row['id']){
+      echo "<tr><td>";
+      echo " ".$row['contents'];
+      echo "</td>";
+      echo "<td>";
+      $rec = $row['contents'];
+      $rec_comment = str_replace(array('<br />','<br>'), "", $rec);
+      
+      $comment_id = '';
+      
+        if($user_name == $row['user_name']){
+          echo '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
+               '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
+               '<input type="hidden" value="'.$board.'" name="board-id" />'.
+               '<input type="submit" value="削除" name="delete_submit" />'.
+               '</form>';
+          $comment_id = $row['id'];
+          $rec_cnt++;
+          echo "</td></tr>\n";
+        }
+    }
+  }
+              if(0 == $rec_cnt){
+                
+                //echo "<td>";
+                echo '<td colspan="2">';
+                echo 'データはありません。';
+                echo '</td>';
+                //echo '<a href="comment.php">コメント一覧に戻る</a>';
+              } 
+  
+?>
+</table>
+<?php
+  //コメントが0件だったら以下の処理をスキップ
+  if(0 == $rec_cnt){
+  echo '<p><a href="index.php">HOMEに戻る</a></p>';
+  echo '</body>';
+  echo '</html>';
+  exit();
+  }
+?>
   <div>
   <!-- コメント編集フォーム -->
-  <?php echo $comment_over; ?>
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <?php echo $row['title']; ?><br /><br />
+      <label><b>コメントを編集する：</b></label><br />
+      <textarea id="comment" name="comment" cols="60" rows="2"><?php
+       if($comment_str > 150){
+         echo $comment_error;
+       }else{
+         echo $rec_comment;
+         //echo $comment;
+       }
+       ?></textarea><br />
+      <input type="hidden" value="<?php echo $comment_id; ?>" name="delete_id" />
+      <input type="hidden" value="<?php echo $board; ?>" name="board-id">
+      <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
+      <input type="submit" value="編集内容を保存" name="submit" /><br /><br />
+  </form>
+  <!-- コメント投稿フォーム_END -->
   </div>
   
 <p><a href="index.php">HOMEに戻る</a></p>

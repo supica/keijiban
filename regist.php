@@ -27,27 +27,6 @@
    $user_name = $_POST['user_name'];
    $password = sha1($_POST['password']);
    $pw = $_POST['password'];
-
-     /*$str = '$user_name';
-     function disp_chara($str){
-       $chara = ctype_alnum($str);     
-         echo '$str';
-       if($chara == true){
-         $disp_chara = 'OK';
-       }else {
-         $disp_chara = 'NG';       
-       }
-     }
-     disp_chara();*/
-     
- /////////////////////////////////
-     /*if(preg_match('/^[\w]+$/', '$user_name')) {
-       echo 'すべて半角英数字です。';
-     }else {
-       echo '半角英数字以外も含まれています。';
-     }*/
-     //exit();
-//////////////////////////////////
      
      //ユーザー名とパスワードがどちらも入力されていたら
      if($user_name != "" && $pw != ""){
