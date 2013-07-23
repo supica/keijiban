@@ -8,7 +8,6 @@
   exit();
   }
 
-  //define('Charset', 'UTF-8');
   //データベース設定
   require_once('dbsettings.php');
   

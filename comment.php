@@ -23,8 +23,6 @@
   $disp_sts = '';
   $comment_list = '';
 
-  //login_check(); //ログイン認証
-  
   // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
@@ -38,7 +36,6 @@
   session_start();
 
   // 選択したタイトルのコメントを表示／クエリ(検索条件)を送信する
-  //データの取り出し(タイトルを表示)
   $sql = "SELECT * FROM board";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
     
@@ -58,7 +55,7 @@
     }
   }
 
-  //データの取り出し()
+  //コメント一覧の表示／データの取り出し()
   $sql = "SELECT * FROM comment";
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
 
@@ -89,27 +86,26 @@
   if(isset($_SESSION['reg_sts'])){  
   $reg_sts = $_SESSION['reg_sts'];  
 
-  switch ($reg_sts){
-      case -1:
-          $disp_sts = '<font color = "red">※登録できませんでした。<br /></font>';
-          break;
-      case 1:
-          $disp_sts = '<font color = "blue">※コメントを登録しました。<br /></font>';
-          break;
-      case 2:
-          $disp_sts = '<font color = "red">※コメントを入力してください。<br /></font>';
-          break;
-      case 3:
-         $disp_sts = '<font color = "red">※コメントは全角150文字以内で入力してください。<br /></font>';
-          break;
-      case 0:
-          $disp_sts = '';
-          break;
-      default:
-          $disp_sts = '<font color = "red">※!?<br /></font>';
-          break;
-  }
-  //echo $disp_sts.'<br />';
+    switch ($reg_sts){
+        case -1:
+            $disp_sts = '<font color = "red">※登録できませんでした。<br /></font>';
+            break;
+        case 1:
+            $disp_sts = '<font color = "blue">※コメントを登録しました。<br /></font>';
+            break;
+        case 2:
+            $disp_sts = '<font color = "red">※コメントを入力してください。<br /></font>';
+            break;
+        case 3:
+            $disp_sts = '<font color = "red">※コメントは全角150文字以内で入力してください。<br /></font>';
+            break;
+        case 0:
+            $disp_sts = '';
+            break;
+        default:
+            $disp_sts = '<font color = "red">※!?<br /></font>';
+            break;
+    }
   }
 
   //投稿コメントが150文字以上の時、コメントを150文字まで表示
@@ -123,14 +119,15 @@
       $comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
       $comment = nl2br($comment_chars); //<br />タグを追加
     }
-    $_SESSION['comment_rec'] = $comment_rec;
+    //$_SESSION['comment_rec'] = $comment_rec;
   }
   session_unset();
 ?>
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>ひとこと掲示板</title>
 </head>
 
@@ -148,11 +145,11 @@
   <br /><br />
 <?php echo $title_disp; ?>
   <!-- コメント一覧 -->
-  <table border="1" width="425" cellspacing="0" cellpadding="6">
+  <table style="word-break:break-all;" border="1" width="425" cellspacing="0" cellpadding="5">
   <tr>
-    <th width="225">コメント一覧</th>
-    <th width="100">name</th>
-    <th width="100">編集</th>
+    <th width="">コメント一覧</th>
+    <th width="60">name</th>
+    <th width="60">編集</th>
   </tr>
 
 <?php echo $comment_list; ?>
@@ -164,7 +161,7 @@
   <form method="post" action="store_comment.php">
     <?php echo $row['title']; ?><br /><br />
       <label>コメント投稿：　<全角150文字以内></label><br />
-      <textarea id="comment" name="comment" cols="60" rows="5"><?php echo $comment_error; ?></textarea><br />
+      <textarea id="comment" name="comment" cols="50" rows="5"><?php echo $comment_error; ?></textarea><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
       <input type="submit" value="コメント送信" name="submit" /><br /><br />

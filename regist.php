@@ -1,12 +1,3 @@
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>ひとこと掲示板</title>
-</head>
-
-<body>
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
-
 <?php
   if(isset($_SESSION['post_proc']) == true){
     $_SESSION['post_proc'] = false;
@@ -45,20 +36,28 @@
          exit;
          }else{
            $error_message = '<font color = "red">※このユーザー名は使用されています。他のユーザー名を指定してください。</font>'.'<br /><br /><a href="">戻る</a>';
-           echo $error_message;
          }
        }else{
          $error_message ='<font color = "red">※ユーザー名は、4～8文字の英数字で登録してください。</font>';
-         echo $error_message;
        }
      }else{
      $error_message = '<font color = "red">※入力内容が正しくありません。</font>';
-     echo $error_message;
      }
-   //mysql_close($link);
+   mysql_close($link);
   }
-
 ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>ひとこと掲示板</title>
+</head>
+
+<body>
+  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  
+<?php echo $error_message; ?>
+
   <h2>ユーザー登録</h2>
 <div>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >

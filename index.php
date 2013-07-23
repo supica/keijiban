@@ -51,7 +51,6 @@
           exit();
           }else{
             $title_20 = mb_substr($title,0,20,'utf-8');  //20文字で丸める
-              //echo $title_20;
    	        $login_message = '<font color = "red">※20文字以内で入力してください　　　</font>'.
    	                         '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
           }
@@ -68,7 +67,7 @@
     if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
       $delete_id = $_POST['delete_id'];
       $delete_title = '<font color="red">　※選択したタイトルを削除しました。</font>';
-      $result = $delete_title;
+      //$result = $delete_title;
       
       $sql = "DELETE FROM board WHERE id = $delete_id";
       $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -143,9 +142,10 @@
   }
 ?>
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>ひとこと掲示板</title>
 </head>
 
@@ -165,8 +165,8 @@
 
   <table border="1" width="425" cellspacing="0" cellpadding="0">
   <tr>
-    <th width="800">タイトル一覧</th>
-    <th width="100">削除</th>
+    <th>タイトル一覧</th>
+    <th width="60">削除</th>
   </tr>
 
   <?php echo $title_disp; ?>

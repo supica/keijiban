@@ -34,11 +34,11 @@
       if($user_name != "" && $pw !=""){       
         $sql = "SELECT * FROM users WHERE user_name = '$user_name' AND password = '$password'";
         $result = mysql_query($sql, $link);
+
           //該当する結果が1行だったら
           if(mysql_num_rows($result) == 1){
             $row = mysql_fetch_array($result);
-            //$sql = "SELECT * FROM users WHERE user_name = '$user_name' AND password = '$password'";
-            //$result = mysql_query($sql, $link);
+
             //クッキーの送信
             setcookie('user_name',$row['user_name']);
             //header('Location:index.php');
@@ -48,20 +48,19 @@
           }
        else{
          $error_message = '<font color = "red">※ユーザーID、または、パスワードが間違っています。</font>';
-         //echo '<font color = "red">ユーザーID、または、パスワードが間違っています。</font>';
        }
     }
     else{
       $error_message = '<font color = "red">※ユーザーIDとパスワードが入力されていません。</font>';
-      //echo '<font color = "red">※入力内容が正しくありません。</font>';
     }
   }
   
 
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>ひとこと掲示板</title>
 </head>
 

@@ -14,6 +14,7 @@
   // データベースを選択する
   $sdb = mysql_select_db(DB_NAME,$link) or die("データベースの選択に失敗しました。");  
   
+  
   $user_name = '';
   $login_message = '';
   $delete_id = '';
@@ -41,7 +42,8 @@
   $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
   
   if(!isset($_POST['board-id'])){
-    $error_message = '<font color = "red">※コメント編集は、トップページの"タイトルを選ぶ"を選択後、
+    $error_message = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'.
+                     '<font color = "red">※コメント編集は、トップページの"タイトルを選ぶ"を選択後、
                      <br />　コメント一覧の「編集・削除ボタン」よりお進みください</font>'.
                      '<p><a href="index.php">HOMEに戻る</a></p>';
     echo $error_message;
@@ -84,7 +86,6 @@
           $edit_message = '<font color = "blue">　　※コメントを編集しました</font>';
       }else{
         $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
-        //$comment_chars = htmlspecialchars($comment,ENT_QUOTES); //htmlタグを無効化
           $edit_message = '<font color = "red">　　※コメントは150字以内で編集してください</font>';
       }
     }    
@@ -122,13 +123,12 @@
           $comment_edit .= "</td></tr>\n";
 
           $comment_over = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                          $row['title'].
                           '<br /><br />'.
                           '<label>'.
                           '<b>コメントを編集する：</b>'.
                           '</label>'.
                           '<br />'.
-                          '<textarea id="comment" name="comment" cols="60" rows="2">';
+                          '<textarea id="comment" name="comment" cols="50" rows="5">';
                            if($comment_str > 150){
                             $comment_over .= $comment_error;
                             }else{
@@ -148,11 +148,12 @@
                                   'データはありません。'.
                                   '</td>';
               } 
-?>
 
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>ひとこと掲示板</title>
 </head>
 
@@ -172,10 +173,10 @@
 
 <?php echo $title_disp; ?>
 
-<table border="1" width="425" cellspacing="0" cellpadding="6">
+<table style="word-break:break-all;" border="1" width="425" cellspacing="0" cellpadding="5">
   <tr>
-    <th width="800">コメント内容</th>
-    <th width="100">削除</th>
+    <th width="">コメント内容</th>
+    <th width="60">削除</th>
   </tr>
   <?php echo $comment_edit; ?>
 </table>
