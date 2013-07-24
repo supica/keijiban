@@ -31,9 +31,10 @@
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
     $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中　';
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
+    $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
-    $login_message =  '<font color = "red">※ログインして下さい<br /><br /></font>';
+    $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい<br /><br /></font>';
   }
 
 
@@ -163,7 +164,7 @@
   <a href="regist.php">ユーザー登録</a>　　　
 
 <?php 
-  echo $login_message;
+  echo $regist_change;
   echo $edit_message;
   echo $delete_comment;
  ?>

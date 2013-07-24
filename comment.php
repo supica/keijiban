@@ -22,14 +22,16 @@
   $title_disp = '';
   $disp_sts = '';
   $comment_list = '';
+  //$regist_change_'';
 
   // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
     $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中　';
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
+    $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
-    $login_message =  '<font color = "red">※ログインして下さい　</font>';
+    $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい　</font>';
   }
 
   //セッションを開始する
@@ -134,9 +136,10 @@
 <body>
   <h1>ひとこと掲示板</h1>
   <a href="login.php">ログイン</a>　　　
-  <a href="regist.php">ユーザー登録</a>　　　
+  <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
   <?php
+    echo $regist_change;
     echo $login_message;
     echo $disp_sts;
    ?>

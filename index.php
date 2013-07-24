@@ -24,6 +24,7 @@
   $title_make = '';
   $title_choose = '';
   $title_disp = '';
+  $regist_change = '';
 
   login_check(); //ログイン認証
   
@@ -32,8 +33,9 @@
     $user_name = $_COOKIE['user_name'];      
     $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
                       '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
+    $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
-    $login_message =  '<font color = "red">※ログインして下さい<br /><br /></font>';
+    $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい<br /><br /></font>';
   }
 
   // 「タイトルを作る」から送信ボタンが押された時
@@ -152,9 +154,10 @@
 <body>
   <h1>ひとこと掲示板</h1>
   <a href="login.php">ログイン</a>　　　
-  <a href="regist.php">ユーザー登録</a>　　　
+  <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
   <?php
+    echo $regist_change;
     echo $login_message;
     echo $title_make;
     echo $title_choose;
