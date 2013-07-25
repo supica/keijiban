@@ -18,10 +18,11 @@
    $user_name = $_POST['user_name'];
    $password = sha1($_POST['password']);
    $pw = $_POST['password'];
+   $pw_2 = $_POST['password_2'];
      
-     //ユーザー名とパスワードがどちらも入力されていたら
-     if($user_name != "" && $pw != ""){
-     $sql = "SELECT * FROM users WHERE user_name = '$user_name' AND password = '$password'";
+     //ユーザー名、パスワード、確認用パスワードが入力されていたら＆パスワードと確認用パスワードが同一だったら
+     if($user_name != "" && $pw != "" && $pw_2 != "" && $pw == $pw_2){
+     $sql = "SELECT * FROM users WHERE user_name = '$user_name'";
      $result = mysql_query($sql,$link);
      
        //入力チェック：4-8文字の英数字
@@ -29,13 +30,13 @@
          //ユーザー名とパスワードで問い合わせる
          if(mysql_num_rows($result) == 0){
            $sql = "INSERT INTO training01.users(id,user_name,password) VALUES(NULL,'$user_name','$password')";
-           $sql_c = "INSERT INTO training01.comment(user_name) VALUES('$user_name')";         
+           //$sql_c = "INSERT INTO training01.comment(user_name) VALUES('$user_name')";         
            $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
            setcookie('user_name','$user_name');
            header('Location: regist02.php');
          exit;
          }else{
-           $error_message = '<font color = "red">※このユーザー名は使用されています。他のユーザー名を指定してください。</font>'.'<br /><br /><a href="">戻る</a>';
+           $error_message = '<font color = "red">※このユーザー名は使用されています。<br />　他のユーザー名を指定してください。</font>';
          }
        }else{
          $error_message ='<font color = "red">※ユーザー名は、4～8文字の英数字で登録してください。</font>';
@@ -65,6 +66,8 @@
     <input type="text" id="user_name" name="user_name" value=""/><br />
     <label for="password">パスワード：</label><br />
     <input type="password" id="password" name="password" value=""/><br />
+    <label for="password_2">パスワード(確認)：</label><br />
+    <input type="password" id="password_2" name="password_2" value=""/><br />
     <input type="submit" value="送信" name="submit" />
   </form>
 </div><!-- post_comment_form_END -->
