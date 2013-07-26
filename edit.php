@@ -31,7 +31,7 @@
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
     $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中';
     $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
     $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい<br /><br /></font>';
@@ -63,7 +63,7 @@
   //削除ボタンが押された場合に行う処理
   if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
     $delete_id = $_POST['delete_id'];
-    $delete_comment = '<font color="red">　※コメントを削除しました。</font>';
+    $delete_comment = '<font color="red"><br /><br />※コメントを削除しました。</font>';
  
     $sql = "DELETE FROM comment WHERE id = $delete_id";
     $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -84,14 +84,14 @@
       if($comment_str <= 150){
         $sql = "UPDATE comment SET contents = '$comment_br' WHERE id = $delete_id";
         $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-          $edit_message = '<font color = "blue">　　※コメントを編集しました</font>';
+          $edit_message = '<font color = "blue"><br /><br />※コメントを編集しました</font>';
       }else{
         $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
-          $edit_message = '<font color = "red">　　※コメントは150字以内で編集してください</font>';
+          $edit_message = '<font color = "red"><br /><br />※コメントは150字以内で編集してください</font>';
       }
     }    
     elseif($comment == "") {
-        $edit_message = '<font color = "red">　　※コメントを入力してください</font>';
+        $edit_message = '<font color = "red"><br /><br />※コメントを入力してください</font>';
     }
   }
 
@@ -159,12 +159,13 @@
 </head>
 
 <body>
-  <h1>ひとこと掲示板</h1>
-  <a href="login.php">ログイン</a>　　　
-  <a href="regist.php">ユーザー登録</a>　　　
+  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <!--<a href="login.php">ログイン</a>　　　-->
+  <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
 <?php 
   echo $regist_change;
+  echo $login_message;
   echo $edit_message;
   echo $delete_comment;
  ?>

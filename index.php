@@ -35,7 +35,7 @@
                       '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
     $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
-    $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい<br /><br /></font>';
+    $login_message = '<a href="regist.php">ユーザー登録</a>　　　'.'<a href="login.php">ログイン</a><br /><br />';
   }
 
   // 「タイトルを作る」から送信ボタンが押された時
@@ -53,12 +53,12 @@
           exit();
           }else{
             $title_20 = mb_substr($title,0,20,'utf-8');  //20文字で丸める
-   	        $login_message = '<font color = "red">※20文字以内で入力してください　　　</font>'.
-   	                         '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
+   	        $login_message .= '<font color = "red">※20文字以内で入力してください　　　</font>'.
+   	                         '<a href="index.php">HOMEに戻る</a><br /><br />';
           }
       }elseif($title == ""){
-	    $login_message = '<font color = "red">※登録するタイトルを入力してください　　　</font>'.
-	                     '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
+	    $login_message .= '<font color = "red">※登録するタイトルを入力してください　　　</font>'.
+	                     '<a href="">HOMEに戻る</a><br /><br />';
   }else {
 	$login_message = '<font color = "red">※ログインしてください　　　</font>'.
 	                 '<a href="index.php"><br /><br />HOMEに戻る</a><br /><br />';
@@ -153,7 +153,7 @@
 
 <body>
   <h1>ひとこと掲示板</h1>
-  <a href="login.php">ログイン</a>　　　
+  <!--<a href="login.php">ログイン</a>　　　-->
   <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
   <?php

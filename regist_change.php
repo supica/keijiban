@@ -68,7 +68,7 @@
 </head>
 
 <body>
-  <h1>ひとこと掲示板</h1>
+  <h1><a href="index.php">ひとこと掲示板</a></h1>
 
   <div>
   <?php echo $error_message; ?>

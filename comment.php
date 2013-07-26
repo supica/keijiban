@@ -28,7 +28,7 @@
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
     $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中';
     $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
     $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい　</font>';
@@ -90,16 +90,16 @@
 
     switch ($reg_sts){
         case -1:
-            $disp_sts = '<font color = "red">※登録できませんでした。</font>';
+            $disp_sts = '<font color = "red"><br /><br />※登録できませんでした。</font>';
             break;
         case 1:
-            $disp_sts = '<font color = "blue">※コメントを登録しました。</font>';
+            $disp_sts = '<font color = "blue"><br /><br />※コメントを登録しました。</font>';
             break;
         case 2:
-            $disp_sts = '<font color = "red">※コメントを入力してください。</font>';
+            $disp_sts = '<font color = "red"><br /><br />※コメントを入力してください。</font>';
             break;
         case 3:
-            $disp_sts = '<font color = "red">※コメントは全角150文字以内で入力してください。</font>';
+            $disp_sts = '<font color = "red"><br /><br />※コメントは全角150文字以内で入力してください。</font>';
             break;
         case 0:
             $disp_sts = '';
@@ -134,8 +134,8 @@
 </head>
 
 <body>
-  <h1>ひとこと掲示板</h1>
-  <a href="login.php">ログイン</a>　　　
+  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <!--<a href="login.php">ログイン</a>　　　-->
   <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
   <?php
