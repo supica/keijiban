@@ -78,13 +78,13 @@
   //「タイトルを作る」の文字数判定
   if(login_check() == true){
     $title_make = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                  '<label for="title">タイトルを作る：　＜20文字以内＞</label><br />'.
-                  '<textarea id="title" name="title" cols="60" >';
+                  '<label for="title">タイトルを作る：　＜20文字以内＞</label>'.
+                  '<textarea  class="lay" name="title" cols="60" >';
       if($str_mb > 20){
         $title_make .= $title_20;
       }
     $title_make .= '</textarea><br />'.
-                  '<input type="submit" value="送信" name="submit" />'.
+                  '<input type="submit" value="送信" name="submit" class="submit" />'.
                   '</form>';
   }
 
@@ -94,7 +94,7 @@
 
   if(login_check() == true){
     $title_choose = '<form method="get" action="comment.php" >タイトルを選ぶ：'.
-                    '<select name="board-id">';    
+                    '<select name="board-id" class="lay">';    
   
     while ($row = mysql_fetch_assoc($result)) {
       $title_choose .= "<option value=\"".
@@ -103,7 +103,7 @@
                        $row['title'].
                        "</option>";
     }
-    $title_choose .= '<input type="submit" value="選択" name="select_submit" />'.
+    $title_choose .= '<input type="submit" value="選択" name="select_submit" class="submit" />'.
                      '</select>'.
                      '</form>';
   }
@@ -125,14 +125,14 @@
     }else{
       $title_disp .= "<tr><td>".
                      $row['title'].
-                     "</td><td>".
+                     '</td><td class="delate">'.
                      ''.
                      '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
                      '</form>';
         if($user_name == $row['user_name']){
           $title_disp .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
                          '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
-                         '<input type="submit" value="削除" name="delete_submit" />'.
+                         '<input type="submit" value="削除" name="delete_submit" class="submit" />'.
                          '</form>'.  
                          "</td></tr>\n";
         }else {
@@ -148,25 +148,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css">
+
   <title>ひとこと掲示板</title>
 </head>
 
 <body>
+<div id="wrapper">
   <h1>ひとこと掲示板</h1>
   <!--<a href="login.php">ログイン</a>　　　-->
   <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
+<div>
   <?php
     echo $regist_change;
     echo $login_message;
+    //echo $delete_title;
+  ?>
+</div><!-- _END -->
+<div class="space10px"> </div>
+<div class="title-lay">
+  <?php
     echo $title_make;
+    echo '<div class="space10px"></div>';
     echo $title_choose;
     //echo $delete_title;
   ?>
+</div><!-- title-lay_END -->
 
   <?php echo $delete_title; ?>
 
-  <table border="1" width="425" cellspacing="0" cellpadding="0">
+  <table class="lay" border="1" width="425" cellspacing="0" cellpadding="0">
   <tr>
     <th>タイトル一覧</th>
     <th width="60">削除</th>
@@ -176,6 +188,7 @@
 
   </table>
 <!-- <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->
+</div><!-- wrapper_END -->
 </body>
 </html>
 

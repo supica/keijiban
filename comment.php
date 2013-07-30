@@ -67,15 +67,15 @@
       $comment_list .= "<tr><td>".
                       $row['contents'].
                       "</td>".
-                      "<td>".
+                      '<td class="delate">'.
                       $row['user_name'].
                       "</td>".
-                      "<td>";
+                      '<td class="delate">';
       if($user_name == $row['user_name']){
       $comment_list .= '<form method="post" action="edit.php">'.
                        '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
                        '<input type="hidden" value="'.$board.'" name="board-id" />'.
-                       '<input type="submit" value="編集・削除" name="delete_submit" />'.
+                       '<input type="submit" value="編集・削除" name="delete_submit" class="submit" />'.
                        '</form>'.
                        "</tr></td>\n";
       }
@@ -130,49 +130,56 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css">
   <title>ひとこと掲示板</title>
 </head>
 
 <body>
+<div id="wrapper">
   <h1><a href="index.php">ひとこと掲示板</a></h1>
   <!--<a href="login.php">ログイン</a>　　　-->
   <!--<a href="regist.php">ユーザー登録</a>　　　-->
 
+<div>
   <?php
     echo $regist_change;
     echo $login_message;
     echo $disp_sts;
    ?>
-
+</div><!-- _END -->
   <!-- 選択したコメント -->
-  <br /><br />
+<div class="space15px"> </div>
 <?php echo $title_disp; ?>
+<div class="space05px"> </div>
+
+<div class="title-lay">
   <!-- コメント一覧 -->
-  <table style="word-break:break-all;" border="1" width="425" cellspacing="0" cellpadding="5">
+  <!-- word-break:break-all = 行末で改行 （単語の途中であっても改行させる）-->
+  <table  class="lay" style="word-break:break-all;" border="1" width="425" cellspacing="0" cellpadding="5">
   <tr>
     <th width="">コメント一覧</th>
     <th width="60">name</th>
     <th width="60">編集</th>
   </tr>
-
 <?php echo $comment_list; ?>
-
 </table>
+</div><!-- title-lay_END -->
 
-  <div>
+<div class="comment-post">
   <!-- コメント投稿フォーム -->
   <form method="post" action="store_comment.php">
     <?php echo $row['title']; ?><br /><br />
       <label>コメント投稿：　<全角150文字以内></label><br />
-      <textarea id="comment" name="comment" cols="50" rows="5"><?php echo $comment_error; ?></textarea><br />
+      <textarea id="comment" name="comment" cols="50" rows="5" class="comment-lay"><?php echo $comment_error; ?></textarea><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">
       <input type="hidden" value="<?php echo $user_name; ?>" name="user_name">
-      <input type="submit" value="コメント送信" name="submit" /><br /><br />
+      <input type="submit" value="コメント送信" name="submit" class="submit" /><br /><br />
   </form>
   <!-- コメント投稿フォーム_END -->
-  </div>
+</div>
 
 <p><a href="index.php">HOMEに戻る</a></p>
+</div><!-- wrapper_END -->
 </body>
 </html>
 

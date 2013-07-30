@@ -1,0 +1,186 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: MS Pゴシック,ヒラギノ角,Osaka,Pro W3,san-self;
+  //color: #333333;
+  color: #664933;
+  background: #CEF6EC;
+}
+
+a {
+  //color: #00aaff;
+  //color: #2ECCFA;
+  color: #FA58AC;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: none; 
+}
+
+div.space05px {
+	clear: both;
+	font-size: 5px;
+	height: 7px;
+}
+
+div.space10px {
+	clear: both;
+	font-size: 5px;
+	height: 10px;
+}
+
+div.space15px {
+	clear: both;
+	font-size: 5px;
+	height: 15px;
+}
+
+h1{
+  padding-bottom: 15px;
+  font-size: 180%;
+  text-align: center;
+  //color: #664933;
+}
+
+h2{
+  padding-bottom: 15px;
+  font-size: 140%;
+  text-align: center;
+  //color: #664933;
+}
+/*h1:a {
+  color: #664933;
+}*/
+
+.submit {
+  //margin: 0 0 20px 0;
+  font-size: 0.8em;
+  cursor:pointer;
+  border-radius: 5px;
+  border:solid 1px #ccc;
+  //background-color: #FE2E9A;
+  background-color: #FA58D0;
+  color: #ffffff;
+  padding: 2px 6px;  
+}
+/****************************************************/
+
+div#wrapper{
+  margin: 15px auto;
+  width: 425px;
+  text-align: center;
+  //height: 100px;
+}
+
+table.lay {
+  margin: 0 auto;
+  background-color: #ffffff;
+  border: #d2b48c;
+  border-collapse:collapse;
+  empty-cells: show;
+  //border-left:1px solid #d2b48c;  
+}
+
+table.lay tr{
+  //margin: 5px;
+  //padding: 5px;
+  //text-align: center;
+}
+table.lay td{
+  padding: 5px;
+  //text-align: center;
+}
+
+table.lay td.delate{
+  text-align: center;
+}
+
+.title-lay {
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+textarea.lay {
+  border: 1px;
+  border-style: dotted;
+  border-color: #d2b48c;
+  border-radius: 5px; //角丸の効果
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+  width: 425px;
+  height: 2em;
+  margin-bottom:5px;
+  //vertical-align: middle;
+  //box-shadow:inner 0 0 4px rgba(0,0,0,0.2);
+}
+
+select.lay {
+  border: 1px;
+  border-style: dotted;
+  border-color: #d2b48c;
+  width: 425px;
+  height: 2em;
+  margin-bottom: 5px;
+  //padding-bottom: 20px;
+}
+
+/*input:focus{
+  border: solid 1px #FF00FF;
+}*/
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px #F5A9D0 solid;
+}
+
+/************************************************/
+
+.comment-post {
+  text-align: left;
+  //width: 425px;
+}
+
+textarea.comment-lay {
+  border: 1px;
+  border-style: dotted;
+  border-color: #d2b48c;
+  border-radius: 5px; //角丸の効果
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+  width: 425px;
+  height: 6em;
+  margin-bottom:5px;
+  //vertical-align: middle;
+}
+
+/***************************************/
+/* ログインなどの入力画面
+/***************************************/
+.log-lay {
+  padding-bottom: 20px;
+}
+
+.log-form {
+  width: 250px;
+  height: 2.5em;
+  //margin-top: 15px;
+  margin-bottom: 20px;
+  //padding-top: 15px;
+}
+
+.log-lay dl dt {
+  float: none;
+  width: auto;
+  height: auto;
+  line-height: 1.6em;
+  clear: none;
+}
+
+.question {
+  display: block;
+  width: 8em;
+  float: left;
+}

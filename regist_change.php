@@ -64,28 +64,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css">
   <title>ひとこと掲示板</title>
 </head>
 
 <body>
+<div id="wrapper">
   <h1><a href="index.php">ひとこと掲示板</a></h1>
 
-  <div>
+  <div class="log-lay">
   <?php echo $error_message; ?>
   <!-- パスワード変更フォーム -->
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-      <label="password">現在のパスワード：</label><br />
-      <input type="password" id="password" name="password" value=""/><br /><br />
-      <label="new_pass">新しいパスワード：</label><br />
-      <input type="password" id="new_pass" name="new_pass" value=""/><br /><br />
-      <label for="new_pass_2">新しいパスワード(確認)：</label><br />
-      <input type="password" id="new_pass_2" name="new_pass_2" value=""/><br /><br />
-      <input type="submit" value="変更" name="submit" />　
+    <dl>
+    <dt>
+      <label for="password" class="question">現在のパスワード：</label><br />
+      <input type="password" id="password" name="password" value="" class="log-form" />
+    </dt>
+    <dt>
+      <label for="new_pass" class="question">新しいパスワード：</label>
+      <input type="password" id="new_pass" name="new_pass" value="" class="log-form" />
+    </dt>
+    <dt>
+      <label for="new_pass_2" class="question">新しいパスワード(確認)：</label>
+      <input type="password" id="new_pass_2" name="new_pass_2" value="" class="log-form" />
+    </dt>
+      <input type="submit" value="変更" name="submit" class="submit" />
+    </dl>
   </form>
   <!-- コメント投稿フォーム_END -->
   </div>
 
 <p><a href="index.php">HOMEに戻る</a></p>
+</div><!-- wrapper_END -->
 </body>
 </html>
 

@@ -61,23 +61,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css">
   <title>ひとこと掲示板</title>
 </head>
 
 <body>
+<div id="wrapper">
   <h1><a href="index.php">ひとこと掲示板</a></h1>
   <h2>ログイン</h2>
   <!--<p><a href="">ログアウト</a></p>-->
-<div>
+<div class="log-lay">
   <p><?php echo $error_message; ?></p>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-    <label for="user_name">ユーザー名：</label><br />
-    <input type="text" id="user_name" name="user_name" value="<?php echo $user_name; ?>"/><br />
-    <label for="password">パスワード：</label><br />
-    <input type="password" id="password" name="password" value=""/><br />
-    <input type="submit" value="送信" name="submit" />
+    <dl>
+    <dt>
+    <label for="user_name" class="question">ユーザー名：</label>
+    <input type="text" id="user_name" name="user_name" value="<?php echo $user_name; ?>" class="log-form" />
+    </dt>
+    <dt>
+    <label for="password" class="question">パスワード：</label>
+    <input type="password" id="password" name="password" value="" class="log-form"/>
+    </dt>
+    <input type="submit" value="送信" name="submit" class="submit" />
+    </dl>
   </form>
 </div>
 <p><a href="index.php">HOMEに戻る</a></p>
+</div><!-- wrapper_END -->
 </body>
 </html>

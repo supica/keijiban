@@ -107,7 +107,7 @@
       $comment_edit = "<tr><td>".
                       " ".$row['contents'].
                       "</td>".
-                      "<td>";
+                      '<td class="delate">';
       $rec = $row['contents'];
       $rec_comment = str_replace(array('<br />','<br>'), "", $rec);
       
@@ -117,19 +117,19 @@
           $comment_edit .= '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
                            '<input type="hidden" value="'.$row['id'].'" name="delete_id" />'.
                            '<input type="hidden" value="'.$board.'" name="board-id" />'.
-                           '<input type="submit" value="削除" name="delete_submit" />'.
+                           '<input type="submit" value="削除" name="delete_submit" class="submit" />'.
                            '</form>';
           $comment_id = $row['id'];
           $rec_cnt++;
           $comment_edit .= "</td></tr>\n";
 
           $comment_over = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                          '<br /><br />'.
+                          //'<br /><br />'.
                           '<label>'.
                           '<b>コメントを編集する：</b>'.
                           '</label>'.
                           '<br />'.
-                          '<textarea id="comment" name="comment" cols="50" rows="5">';
+                          '<textarea id="comment" name="comment" cols="50" rows="5" class="comment-lay">';
                            if($comment_str > 150){
                             $comment_over .= $comment_error;
                             }else{
@@ -139,7 +139,7 @@
                            '<input type="hidden" value="'.$comment_id.'" name="delete_id" />'.
                            '<input type="hidden" value="'.$board.'" name="board-id">'.
                            '<input type="hidden" value="'.$user_name.'" name="user_name">'.
-                           '<input type="submit" value="編集内容を保存" name="submit" /><br /><br />'.
+                           '<input type="submit" value="編集内容を保存" name="submit" class="submit" /><br /><br />'.
                            '</form>';
         }
     }
@@ -155,10 +155,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css"> 
   <title>ひとこと掲示板</title>
 </head>
 
 <body>
+<div id="wrapper">
   <h1><a href="index.php">ひとこと掲示板</a></h1>
   <!--<a href="login.php">ログイン</a>　　　-->
   <!--<a href="regist.php">ユーザー登録</a>　　　-->
@@ -172,24 +174,26 @@
 
   <!-- 選択したコメントの表示 -->
 <br /><br />
-
+<div class="space10px"> </div>
 <?php echo $title_disp; ?>
 
-<table style="word-break:break-all;" border="1" width="425" cellspacing="0" cellpadding="5">
+<div class="title-lay">
+<table class="lay" style="word-break:break-all;" border="1" width="425" cellspacing="0" cellpadding="5">
   <tr>
     <th width="">コメント内容</th>
     <th width="60">削除</th>
   </tr>
   <?php echo $comment_edit; ?>
 </table>
-
-  <div>
+</div><!-- title-lay_END -->
+<div class="comment-post">
   <!-- コメント編集フォーム -->
   <?php echo $comment_over; ?>
   </div>
   
 <p><a href="index.php">HOMEに戻る</a></p>
 
+</div><!-- wrapper_END -->
 </body>
 </html>
 
