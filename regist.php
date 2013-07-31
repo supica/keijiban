@@ -57,7 +57,7 @@
 
 <body>
 <div id="wrapper">
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   
 <?php echo $error_message; ?>
 

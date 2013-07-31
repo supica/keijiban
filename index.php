@@ -35,7 +35,7 @@
                       '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
     $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
-    $login_message = '<a href="regist.php">ユーザー登録</a>　　　'.'<a href="login.php">ログイン</a><br /><br />';
+    $login_message = '<a href="regist.php">ユーザー登録</a>　　　'.'<a href="login.php">ログイン</a>';
   }
 
   // 「タイトルを作る」から送信ボタンが押された時
@@ -148,16 +148,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=9" /> -->
   <link href="style.css" rel="stylesheet" type="text/css">
+  
 
   <title>ひとこと掲示板</title>
 </head>
 
 <body>
 <div id="wrapper">
-  <h1>ひとこと掲示板</h1>
-  <!--<a href="login.php">ログイン</a>　　　-->
-  <!--<a href="regist.php">ユーザー登録</a>　　　-->
+  <h1 id="hitokoto"><span>ひとこと掲示板</span></h1>
 
 <div>
   <?php

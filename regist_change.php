@@ -70,30 +70,29 @@
 
 <body>
 <div id="wrapper">
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
 
-  <div class="log-lay">
   <?php echo $error_message; ?>
   <!-- パスワード変更フォーム -->
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
-    <dl>
-    <dt>
-      <label for="password" class="question">現在のパスワード：</label><br />
-      <input type="password" id="password" name="password" value="" class="log-form" />
-    </dt>
-    <dt>
-      <label for="new_pass" class="question">新しいパスワード：</label>
-      <input type="password" id="new_pass" name="new_pass" value="" class="log-form" />
-    </dt>
-    <dt>
-      <label for="new_pass_2" class="question">新しいパスワード(確認)：</label>
-      <input type="password" id="new_pass_2" name="new_pass_2" value="" class="log-form" />
-    </dt>
-      <input type="submit" value="変更" name="submit" class="submit" />
-    </dl>
-  </form>
-  <!-- コメント投稿フォーム_END -->
-  </div>
+<div class="log-lay">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+  <dl>
+  <dt>
+    <label for="password" class="question">現在のパスワード：</label>
+    <input type="password" id="password" name="password" value="" class="log-form" />
+  </dt>
+  <dt>
+    <label for="new_pass" class="question">新しいパスワード：</label>
+    <input type="password" id="new_pass" name="new_pass" value="" class="log-form" />
+  </dt>
+  <dt>
+    <label for="new_pass_2" class="question">新しいパスワード(確認)：</label>
+    <input type="password" id="new_pass_2" name="new_pass_2" value="" class="log-form" />
+  </dt>
+    <input type="submit" value="変更" name="submit" class="submit" />
+  </dl>
+</form>
+</div><!-- log-lay_END -->
 
 <p><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->

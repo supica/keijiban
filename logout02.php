@@ -6,7 +6,8 @@
   <title>ひとこと掲示板</title>
 </head>
 <div id="wrapper">
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
+
   <h2>ログアウトしました。</h2>
   <a href="index.php">HOMEに戻る</a>
 </div><!-- wrapper_END -->

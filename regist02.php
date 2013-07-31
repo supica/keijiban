@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="wrapper">
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
+  <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   <h2>ユーザー登録が完了しました</h2>
 <p><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->

@@ -22,7 +22,8 @@
   $title_disp = '';
   $disp_sts = '';
   $comment_list = '';
-  //$regist_change_'';
+  $user_name = '';
+  $regist_change = '';
 
   // ログイン中の表示
   if(login_check() == true){
@@ -47,7 +48,12 @@
   }elseif(isset($_SESSION['board-id'])){
     $board = $_SESSION['board-id'];
   }else{
-    echo '<br /><p><a href="index.php">HOMEに戻る</a></p>';
+    echo '<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+          <link href="style.css" rel="stylesheet" type="text/css"></head>'.
+         '<div id="wrapper">'.
+         '<a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>'.
+         '<br /><p><a href="index.php">HOMEに戻る</a></p>'.
+         '</div>';
   exit;
   }
 
@@ -136,9 +142,7 @@
 
 <body>
 <div id="wrapper">
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
-  <!--<a href="login.php">ログイン</a>　　　-->
-  <!--<a href="regist.php">ユーザー登録</a>　　　-->
+  <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
 
 <div>
   <?php
@@ -168,7 +172,7 @@
 <div class="comment-post">
   <!-- コメント投稿フォーム -->
   <form method="post" action="store_comment.php">
-    <?php echo $row['title']; ?><br /><br />
+    <?php echo $row['title']; ?>
       <label>コメント投稿：　<全角150文字以内></label><br />
       <textarea id="comment" name="comment" cols="50" rows="5" class="comment-lay"><?php echo $comment_error; ?></textarea><br />
       <input type="hidden" value="<?php echo $board; ?>" name="board-id">

@@ -5,9 +5,9 @@
 
 body {
   font-family: MS Pゴシック,ヒラギノ角,Osaka,Pro W3,san-self;
-  //color: #333333;
   color: #664933;
-  background: #CEF6EC;
+  background-image: url(images/K3.png);
+  width: 100%;
 }
 
 a {
@@ -19,6 +19,48 @@ a {
 
 a:hover {
   text-decoration: none; 
+}
+
+div#wrapper{
+  margin: 0 auto;
+  padding-top: 20px;
+  width: 420px;
+  text-align: center;
+}
+
+h1#hitokoto {
+  background-image: url(images/title_w420.png);
+  background-repeat: no-repeat;
+  width: 420px;
+  height: 120px;
+  margin-bottom: 20px;
+}
+
+h1#hitokoto span {
+  display: none;
+}
+
+h2{
+  padding-bottom: 15px;
+  font-size: 140%;
+  text-align: center;
+  color: #664933;
+  font-weight: normal;
+}
+/*h1:a {
+  color: #664933;
+}*/
+
+.submit {
+  //margin: 0 0 20px 0;
+  font-size: 0.8em;
+  cursor:pointer;
+  border-radius: 5px;
+  border:solid 1px #ccc;
+  //background-color: #FE2E9A;
+  background-color: #FA58D0;
+  color: #ffffff;
+  padding: 2px 6px;  
 }
 
 div.space05px {
@@ -39,69 +81,32 @@ div.space15px {
 	height: 15px;
 }
 
-h1{
-  padding-bottom: 15px;
-  font-size: 180%;
-  text-align: center;
-  //color: #664933;
-}
-
-h2{
-  padding-bottom: 15px;
-  font-size: 140%;
-  text-align: center;
-  //color: #664933;
-}
-/*h1:a {
-  color: #664933;
-}*/
-
-.submit {
-  //margin: 0 0 20px 0;
-  font-size: 0.8em;
-  cursor:pointer;
-  border-radius: 5px;
-  border:solid 1px #ccc;
-  //background-color: #FE2E9A;
-  background-color: #FA58D0;
-  color: #ffffff;
-  padding: 2px 6px;  
-}
 /****************************************************/
-
-div#wrapper{
-  margin: 15px auto;
-  width: 425px;
-  text-align: center;
-  //height: 100px;
+.title-lay {
+  text-align: left;
+  padding-bottom: 20px;
 }
 
 table.lay {
-  margin: 0 auto;
+  //margin: 0 auto;
+  //margin-left: 24px;
   background-color: #ffffff;
   border: #d2b48c;
   border-collapse:collapse;
-  empty-cells: show;
+  //empty-cells: show; //空セルの境界線
   //border-left:1px solid #d2b48c;  
 }
 
-table.lay tr{
-  //margin: 5px;
-  //padding: 5px;
-  //text-align: center;
+table.lay th{
+  background-color: #eeeeee;
 }
+table.lay th,
 table.lay td{
   padding: 5px;
-  //text-align: center;
 }
 
 table.lay td.delate{
   text-align: center;
-}
-
-.title-lay {
-  text-align: left;
-  padding-bottom: 20px;
 }
 
 textarea.lay {
@@ -114,8 +119,6 @@ textarea.lay {
   width: 425px;
   height: 2em;
   margin-bottom:5px;
-  //vertical-align: middle;
-  //box-shadow:inner 0 0 4px rgba(0,0,0,0.2);
 }
 
 select.lay {
@@ -125,7 +128,6 @@ select.lay {
   width: 425px;
   height: 2em;
   margin-bottom: 5px;
-  //padding-bottom: 20px;
 }
 
 /*input:focus{
@@ -140,7 +142,8 @@ input:focus, select:focus, textarea:focus {
 
 .comment-post {
   text-align: left;
-  //width: 425px;
+  width: 100%;
+  //margin-left: 34px;
 }
 
 textarea.comment-lay {
@@ -153,18 +156,19 @@ textarea.comment-lay {
   width: 425px;
   height: 6em;
   margin-bottom:5px;
-  //vertical-align: middle;
+  padding: 5px;
 }
 
 /***************************************/
 /* ログインなどの入力画面
 /***************************************/
 .log-lay {
+  //margin: 0 auto;
   padding-bottom: 20px;
 }
 
 .log-form {
-  width: 250px;
+  width: 210px;
   height: 2.5em;
   //margin-top: 15px;
   margin-bottom: 20px;
@@ -181,6 +185,7 @@ textarea.comment-lay {
 
 .question {
   display: block;
-  width: 8em;
+  width: 11em;
   float: left;
+  text-align: right;
 }

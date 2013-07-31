@@ -44,9 +44,12 @@
   
   if(!isset($_POST['board-id'])){
     $error_message = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'.
+                     '<link href="style.css" rel="stylesheet" type="text/css">'.
+                     '<div id="wrapper">'.
                      '<font color = "red">※コメント編集は、トップページの"タイトルを選ぶ"を選択後、
-                     <br />　コメント一覧の「編集・削除ボタン」よりお進みください</font>'.
-                     '<p><a href="index.php">HOMEに戻る</a></p>';
+                     <br />　コメント一覧の「編集・削除ボタン」よりお進みください<br /><br /></font>'.
+                     '<p><a href="index.php">HOMEに戻る</a></p>'.
+                     '</div>';
     echo $error_message;
   exit;
   }
@@ -161,9 +164,7 @@
 
 <body>
 <div id="wrapper">
-  <h1><a href="index.php">ひとこと掲示板</a></h1>
-  <!--<a href="login.php">ログイン</a>　　　-->
-  <!--<a href="regist.php">ユーザー登録</a>　　　-->
+  <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
 
 <?php 
   echo $regist_change;
