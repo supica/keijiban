@@ -52,10 +52,10 @@
                 header('Location:  regist_change02.php');
           }
           else{
-            $error_message = '<font color = "red">※パスワードを確認してください。</font>';
+            $error_message = '<p class="disp_msg">※パスワードを確認してください。</p>';
           }
       }else{
-        $error_message = '<font color = "red">※パスワードを入力してください。</font>';
+        $error_message = '<p class="disp_msg">※パスワードを入力してください。</p>';
       }
   }
 ?>
@@ -82,14 +82,15 @@
     <input type="password" id="password" name="password" value="" class="log-form" />
   </dt>
   <dt>
-    <label for="new_pass" class="question">新しいパスワード：</label>
+    <label for="new_pass" class="question">新パスワード：</label>
     <input type="password" id="new_pass" name="new_pass" value="" class="log-form" />
   </dt>
   <dt>
-    <label for="new_pass_2" class="question">新しいパスワード(確認)：</label>
+    <label for="new_pass_2" class="question">新パスワード(確認)：</label>
     <input type="password" id="new_pass_2" name="new_pass_2" value="" class="log-form" />
   </dt>
-    <input type="submit" value="変更" name="submit" class="submit" />
+    <img src="./images/icon_org.png" />
+    <input type="submit" value="パスワードを変更する" name="submit" class="submit"/>
   </dl>
 </form>
 </div><!-- log-lay_END -->

@@ -21,7 +21,7 @@
   
   //フォームのデータが送信された場合
   if(isset($_COOKIE['user_name'])){
-   $error_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんがログインしています。';
+   $error_message =  '今は ' . '('.$_COOKIE['user_name'].')'.' さんがログインしています。<br /><br />';
   }
 
   //echo 'チェック！！';
@@ -47,11 +47,11 @@
             exit;
           }
        else{
-         $error_message = '<font color = "red">※ユーザーID、または、パスワードが間違っています。</font>';
+         $error_message = '<p class="disp_msg">※ユーザー名、または、パスワードが間違っています。</p>';
        }
     }
     else{
-      $error_message = '<font color = "red">※ユーザーIDとパスワードが入力されていません。</font>';
+      $error_message = '<p class="disp_msg">※ユーザー名とパスワードが入力されていません。</p>';
     }
   }
   
@@ -68,22 +68,20 @@
 <body>
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
-  <h2>ログイン</h2>
-  <!--<p><a href="">ログアウト</a></p>-->
+  <h2>ログイン画面</h2>
+  <?php echo $error_message; ?>
 <div class="log-lay">
-  <p><?php echo $error_message; ?></p>
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
     <dl>
-    <dt>
+    <dt class="log-lay-in">
     <label for="user_name" class="question">ユーザー名：</label>
     <input type="text" id="user_name" name="user_name" value="<?php echo $user_name; ?>" class="log-form" />
     </dt>
-    <dt>
+    <dt class="log-lay-in">
     <label for="password" class="question">パスワード：</label>
     <input type="password" id="password" name="password" value="" class="log-form"/>
     </dt>
-    <input type="submit" value="送信" name="submit" class="submit" />
-    </dl>
+    <img src="./images/icon_blue.png" /><input type="submit" value="ログイン" name="submit" class="submit" />
   </form>
 </div>
 <p><a href="index.php">HOMEに戻る</a></p>

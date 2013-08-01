@@ -96,16 +96,16 @@
 
     switch ($reg_sts){
         case -1:
-            $disp_sts = '<font color = "red"><br /><br />※登録できませんでした。</font>';
+            $disp_sts = '<p class="disp_msg"><br />※登録できませんでした。</p>';
             break;
         case 1:
-            $disp_sts = '<font color = "blue"><br /><br />※コメントを登録しました。</font>';
+            $disp_sts = '<p class="disp_msg2"><br />※コメントを登録しました。</p>';
             break;
         case 2:
-            $disp_sts = '<font color = "red"><br /><br />※コメントを入力してください。</font>';
+            $disp_sts = '<p class="disp_msg"><br />※コメントを入力してください。</p>';
             break;
         case 3:
-            $disp_sts = '<font color = "red"><br /><br />※コメントは全角150文字以内で入力してください。</font>';
+            $disp_sts = '<p class="disp_msg"><br />※コメントは全角150文字以内で入力してください。</p>';
             break;
         case 0:
             $disp_sts = '';

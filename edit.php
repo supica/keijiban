@@ -46,8 +46,8 @@
     $error_message = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'.
                      '<link href="style.css" rel="stylesheet" type="text/css">'.
                      '<div id="wrapper">'.
-                     '<font color = "red">※コメント編集は、トップページの"タイトルを選ぶ"を選択後、
-                     <br />　コメント一覧の「編集・削除ボタン」よりお進みください<br /><br /></font>'.
+                     '<a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>'.
+                     '<p class="disp_msg">※HOMEでタイトルを選択してからコメント編集をして下さい<br /><br /></p>'.
                      '<p><a href="index.php">HOMEに戻る</a></p>'.
                      '</div>';
     echo $error_message;
@@ -66,7 +66,7 @@
   //削除ボタンが押された場合に行う処理
   if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
     $delete_id = $_POST['delete_id'];
-    $delete_comment = '<font color="red"><br /><br />※コメントを削除しました。</font>';
+    $delete_comment = '<p class="disp_msg"><br />※コメントを削除しました</p>';
  
     $sql = "DELETE FROM comment WHERE id = $delete_id";
     $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -87,14 +87,14 @@
       if($comment_str <= 150){
         $sql = "UPDATE comment SET contents = '$comment_br' WHERE id = $delete_id";
         $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-          $edit_message = '<font color = "blue"><br /><br />※コメントを編集しました</font>';
+          $edit_message = '<p class="disp_msg2"><br />※コメントを編集しました</p>';
       }else{
         $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
-          $edit_message = '<font color = "red"><br /><br />※コメントは150字以内で編集してください</font>';
+          $edit_message = '<p class="disp_msg"><br />※コメントは150字以内で編集してください</p>';
       }
     }    
     elseif($comment == "") {
-        $edit_message = '<font color = "red"><br /><br />※コメントを入力してください</font>';
+        $edit_message = '<p class="disp_msg"><br />※コメントを入力してください</p>';
     }
   }
 
@@ -127,7 +127,6 @@
           $comment_edit .= "</td></tr>\n";
 
           $comment_over = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                          //'<br /><br />'.
                           '<label>'.
                           '<b>コメントを編集する：</b>'.
                           '</label>'.
@@ -165,7 +164,7 @@
 <body>
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
-
+  <h2>編集画面</h2>
 <?php 
   echo $regist_change;
   echo $login_message;
@@ -174,7 +173,6 @@
  ?>
 
   <!-- 選択したコメントの表示 -->
-<br /><br />
 <div class="space10px"> </div>
 <?php echo $title_disp; ?>
 

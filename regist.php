@@ -36,13 +36,13 @@
            header('Location: regist02.php');
          exit;
          }else{
-           $error_message = '<font color = "red">※このユーザー名は使用されています。<br />　他のユーザー名を指定してください。</font>';
+           $error_message = '<p class="disp_msg">※このユーザー名は使用されています。<br />　他のユーザー名を指定してください。</p>';
          }
        }else{
-         $error_message ='<font color = "red">※ユーザー名は、4～8文字の英数字で登録してください。</font>';
+         $error_message ='<p class="disp_msg">※ユーザー名は、4～8文字の英数字で登録してください。</p>';
        }
      }else{
-     $error_message = '<font color = "red">※入力内容が正しくありません。</font>';
+     $error_message = '<p class="disp_msg">※入力内容が正しくありません。</p>';
      }
    mysql_close($link);
   }
@@ -59,25 +59,25 @@
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   
-<?php echo $error_message; ?>
-
   <h2>ユーザー登録</h2>
+<?php echo $error_message; ?>
 <div class="log-lay">
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
   <dl>
-  <dt>
+  <dt class="log-lay-regi">
     <label for="user_name" class="question">ユーザー名：</label>
     <input type="text" id="user_name" name="user_name" value="" class="log-form" />
   </dt>
-  <dt>
+  <dt class="log-lay-regi">
     <label for="password" class="question">パスワード：</label>
     <input type="password" id="password" name="password" value="" class="log-form" />
   </dt>
-  <dt>
+  <dt class="log-lay-regi">
     <label for="password_2" class="question">パスワード(確認)：</label>
     <input type="password" id="password_2" name="password_2" value=""  class="log-form" />
   </dt>
-    <input type="submit" value="送信" name="submit" class="submit" />
+    <img src="./images/icon_green.png" />
+    <input type="submit" value="ユーザー登録する" name="submit" class="submit" />
   </dl>
 </form>
 </div><!-- post_comment_form_END -->

@@ -31,11 +31,11 @@
   // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
-    $login_message =  '<img src="./images/icon_pink.png" /><a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
-    $regist_change = '<img src="./images/icon_org.png" /><a href="regist_change.php">パスワード変更</a>　　　';
+    $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
+                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
+    $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
   }else {
-    $login_message = '<img src="./images/icon_green.png" /><a href="regist.php">ユーザー登録</a>　　　'.'<img src="./images/icon_blue.png" /><a href="login.php">ログイン</a>';
+    $login_message = '<a href="regist.php">ユーザー登録</a>　　　'.'<a href="login.php">ログイン</a>';
   }
 
   // 「タイトルを作る」から送信ボタンが押された時
@@ -66,8 +66,13 @@
   //「タイトル一覧」から削除ボタンが押された時
     if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
       $delete_id = $_POST['delete_id'];
-      $delete_title = '<p class="disp_msg2">※選択したタイトルを削除しました。</p>';
-      //$result = $delete_title;
+
+      while($row = mysql_fetch_assoc($result)) {
+        if($board == $row['id']) {
+          $delete_title = '<p class="disp_msg2">※選択した【タイトル：'.$row['title'].'】を削除しました</p>';
+        }
+      }
+      ////////////////////
       
       $sql = "DELETE FROM board WHERE id = $delete_id";
       $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -187,11 +192,6 @@
   </table>
 <!-- <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->
 </div><!-- wrapper_END -->
-<footer>
-  <div class="footer">
-
-  </div><!-- footer-bottom_END -->
-</footer>
 </body>
 </html>
 
