@@ -24,15 +24,30 @@
   $comment_list = '';
   $user_name = '';
   $regist_change = '';
+  $error_message = '';
+  $login_massege = '';
 
   // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
-    $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中';
-    $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
+    $login_message = '<img src="./images/icon_pink.png" /><a href="logout.php">ログアウト</a>　　
+                      <img src="./images/icon_brown.png" /><a href="resign.php" class="resign">退会</a><br /><br />'.
+                     '<img src="./images/icon_red.png" />
+                      今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
+    $regist_change = '<img src="./images/icon_org.png" /><a href="regist_change.php">パスワード変更</a>　　';
   }else {
-    $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい　</font>';
+    /*$login_message =  '<img src="./images/icon_green.png" /><a href="regist.php">ユーザー登録</a>　　'.
+                      '<font color = "red">※ログインして下さい　</font>';*/
+
+    $error_message = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'.
+                     '<link href="style.css" rel="stylesheet" type="text/css">'.
+                     '<div id="wrapper">'.
+                     '<a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>'.
+                     '<p class="disp_msg">※ログインして下さい<br /><br /></p>'.
+                     '<p><a href="index.php">HOMEに戻る</a></p>'.
+                     '</div>';
+    echo $error_message;
+  exit;
   }
 
   //セッションを開始する
@@ -96,16 +111,16 @@
 
     switch ($reg_sts){
         case -1:
-            $disp_sts = '<p class="disp_msg"><br />※登録できませんでした。</p>';
+            $disp_sts = '<p class="disp_msg">※登録できませんでした。</p>';
             break;
         case 1:
-            $disp_sts = '<p class="disp_msg2"><br />※コメントを登録しました。</p>';
+            $disp_sts = '<p class="disp_msg2">※コメントを登録しました。</p>';
             break;
         case 2:
-            $disp_sts = '<p class="disp_msg"><br />※コメントを入力してください。</p>';
+            $disp_sts = '<p class="disp_msg">※コメントを入力してください。</p>';
             break;
         case 3:
-            $disp_sts = '<p class="disp_msg"><br />※コメントは全角150文字以内で入力してください。</p>';
+            $disp_sts = '<p class="disp_msg">※コメントは全角150文字以内で入力してください。</p>';
             break;
         case 0:
             $disp_sts = '';
@@ -144,10 +159,11 @@
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
 
-<div>
+<div class="disp_msg">
   <?php
     echo $regist_change;
     echo $login_message;
+    echo $error_message;
     echo $disp_sts;
    ?>
 </div><!-- _END -->
@@ -182,8 +198,12 @@
   <!-- コメント投稿フォーム_END -->
 </div>
 
-<p><a href="index.php">HOMEに戻る</a></p>
+<p class="home"><img src="./images/icon_l-blue.png" /><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->
+<footer>
+  <div class="footer">
+  </div><!-- footer-bottom_END -->
+</footer>
 </body>
 </html>
 

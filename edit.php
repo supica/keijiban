@@ -25,16 +25,20 @@
   $edit_message = '';
   $comment_edit = '';
   $comment_over = '';
+  $regist_change = '';
 
 
   // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
-    $login_message =  '<a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中';
-    $regist_change = '<a href="regist_change.php">パスワード変更</a>　　　';
+    $login_message = '<img src="./images/icon_pink.png" /><a href="logout.php">ログアウト</a>　　
+                      <img src="./images/icon_brown.png" /><a href="resign.php" class="resign">退会</a><br /><br />'.
+                     '<img src="./images/icon_red.png" />
+                      今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
+    $regist_change = '<img src="./images/icon_org.png" /><a href="regist_change.php">パスワード変更</a>　　';
   }else {
-    $login_message =  '<a href="regist.php">ユーザー登録</a>　　　'.'<font color = "red">※ログインして下さい<br /><br /></font>';
+    $login_message =  '<a href="regist.php">ユーザー登録</a>　　'.
+                      '<font color = "red">※ログインして下さい<br /><br /></font>';
   }
 
 
@@ -47,7 +51,7 @@
                      '<link href="style.css" rel="stylesheet" type="text/css">'.
                      '<div id="wrapper">'.
                      '<a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>'.
-                     '<p class="disp_msg">※HOMEでタイトルを選択してからコメント編集をして下さい<br /><br /></p>'.
+                     '<p class="disp_msg">※ログインして下さい<br /><br /></p>'.
                      '<p><a href="index.php">HOMEに戻る</a></p>'.
                      '</div>';
     echo $error_message;
@@ -66,7 +70,7 @@
   //削除ボタンが押された場合に行う処理
   if(isset($_POST['delete_submit']) && $_POST['delete_submit'] == '削除'){
     $delete_id = $_POST['delete_id'];
-    $delete_comment = '<p class="disp_msg"><br />※コメントを削除しました</p>';
+    $delete_comment = '<p class="disp_msg">※コメントを削除しました</p>';
  
     $sql = "DELETE FROM comment WHERE id = $delete_id";
     $result = mysql_query($sql,$link) or die('ERROR!(削除):MySQLサーバーへの接続に失敗しました。');
@@ -87,14 +91,14 @@
       if($comment_str <= 150){
         $sql = "UPDATE comment SET contents = '$comment_br' WHERE id = $delete_id";
         $result = mysql_query($sql, $link) or die("クエリの送信に失敗しました。<br />SQL:".$sql);
-          $edit_message = '<p class="disp_msg2"><br />※コメントを編集しました</p>';
+          $edit_message = '<p class="disp_msg2">※コメントを編集しました</p>';
       }else{
         $comment_error = mb_substr($comment,0,150,'utf-8'); //文字数で丸め
-          $edit_message = '<p class="disp_msg"><br />※コメントは150字以内で編集してください</p>';
+          $edit_message = '<p class="disp_msg">※コメントは150字以内で編集してください</p>';
       }
     }    
     elseif($comment == "") {
-        $edit_message = '<p class="disp_msg"><br />※コメントを入力してください</p>';
+        $edit_message = '<p class="disp_msg">※コメントを入力してください</p>';
     }
   }
 
@@ -165,12 +169,15 @@
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   <h2>編集画面</h2>
+  
+<div class="disp_msg">
 <?php 
   echo $regist_change;
   echo $login_message;
   echo $edit_message;
   echo $delete_comment;
  ?>
+</div><!-- disp_msg_END -->
 
   <!-- 選択したコメントの表示 -->
 <div class="space10px"> </div>
@@ -190,9 +197,13 @@
   <?php echo $comment_over; ?>
   </div>
   
-<p><a href="index.php">HOMEに戻る</a></p>
+<p class="home"><img src="./images/icon_l-blue.png" /><a href="index.php">HOMEに戻る</a></p>
 
 </div><!-- wrapper_END -->
+<footer>
+  <div class="footer">
+  </div><!-- footer-bottom_END -->
+</footer>
 </body>
 </html>
 

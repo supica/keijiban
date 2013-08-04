@@ -39,10 +39,10 @@
            $error_message = '<p class="disp_msg">※このユーザー名は使用されています。<br />　他のユーザー名を指定してください。</p>';
          }
        }else{
-         $error_message ='<p class="disp_msg">※ユーザー名は、4～8文字の英数字で登録してください。</p>';
+         $error_message = '<p class="disp_msg">※ユーザー名は、4～8文字の英数字で登録してください。</p>';
        }
      }else{
-     $error_message = '<p class="disp_msg">※入力内容が正しくありません。</p>';
+     $error_message = '<p class="disp_msg">※入力内容が正しくありません</p>';
      }
    mysql_close($link);
   }
@@ -60,7 +60,9 @@
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   
   <h2>ユーザー登録</h2>
-<?php echo $error_message; ?>
+<div class= "disp_msg"><?php echo $error_message; ?></div>
+<div class="space10px"> </div>
+
 <div class="log-lay">
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
   <dl>
@@ -77,11 +79,15 @@
     <input type="password" id="password_2" name="password_2" value=""  class="log-form" />
   </dt>
     <img src="./images/icon_green.png" />
-    <input type="submit" value="ユーザー登録する" name="submit" class="submit" />
+    <input type="submit" value="ユーザー登録する" name="submit" class="submit_b" />
   </dl>
 </form>
 </div><!-- post_comment_form_END -->
-<p><a href="index.php">HOMEに戻る</a></p>
+<p class="home"><img src="./images/icon_l-blue.png" /><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->
+<footer>
+  <div class="footer">
+  </div><!-- footer-bottom_END -->
+</footer>
 </body>
 </html>

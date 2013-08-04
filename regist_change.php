@@ -19,6 +19,7 @@
   $url = '';
   $pw = '';
   $pw_n = '';
+  $login_message = '';
   $error_message = '';
   $password = '';
   $new_password = '';
@@ -27,7 +28,18 @@
   
   //フォームのデータが送信された場合
   if(isset($_COOKIE['user_name'])){
-   $error_message = '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br /><br />';
+   $login_message = '<img src="./images/icon_red.png" />
+                     今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
+  }else{  
+    $error_message = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'.
+                     '<link href="style.css" rel="stylesheet" type="text/css">'.
+                     '<div id="wrapper">'.
+                     '<a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>'.
+                     '<p class="disp_msg">※ログインして下さい<br /><br /></p>'.
+                     '<p><a href="index.php">HOMEに戻る</a></p>'.
+                     '</div>';
+    echo $error_message;
+  exit;
   }
     //変更ボタンが押された場合に行う処理
     if(isset($_POST['submit'])){
@@ -52,10 +64,10 @@
                 header('Location:  regist_change02.php');
           }
           else{
-            $error_message = '<p class="disp_msg">※パスワードを確認してください。</p>';
+            $error_message .= '<p class="disp_msg">※パスワードを確認してください。</p>';
           }
       }else{
-        $error_message = '<p class="disp_msg">※パスワードを入力してください。</p>';
+        $error_message .= '<p class="disp_msg">※パスワードを入力してください。</p>';
       }
   }
 ?>
@@ -71,8 +83,16 @@
 <body>
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
+  <h2>パスワード変更画面</h2>
 
-  <?php echo $error_message; ?>
+<div class="disp_msg">
+  <?php
+    echo $login_message;
+    echo $error_message;
+  ?>
+</div>
+<div class="space10px"> </div>
+
   <!-- パスワード変更フォーム -->
 <div class="log-lay">
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
@@ -90,13 +110,18 @@
     <input type="password" id="new_pass_2" name="new_pass_2" value="" class="log-form" />
   </dt>
     <img src="./images/icon_org.png" />
-    <input type="submit" value="パスワードを変更する" name="submit" class="submit"/>
+    <input type="submit" value="パスワードを変更する" name="submit" class="submit_b"/>
   </dl>
 </form>
 </div><!-- log-lay_END -->
 
-<p><a href="index.php">HOMEに戻る</a></p>
+<p class="home"><img src="./images/icon_l-blue.png" /><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->
+<footer>
+  <div class="footer">
+  </div><!-- footer-bottom_END -->
+</footer>
+
 </body>
 </html>
 

@@ -31,11 +31,14 @@
   // ログイン中の表示
   if(login_check() == true){
     $user_name = $_COOKIE['user_name'];      
-    $login_message =  '<img src="./images/icon_pink.png" /><a href="logout.php">ログアウト</a><br /><br />'.
-                      '今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
-    $regist_change = '<img src="./images/icon_org.png" /><a href="regist_change.php">パスワード変更</a>　　　';
+    $regist_change = '<img src="./images/icon_org.png" /><a href="regist_change.php">パスワード変更</a>　　';
+    $login_message = '<img src="./images/icon_pink.png" /><a href="logout.php">ログアウト</a>　　
+                      <img src="./images/icon_brown.png" /><a href="resign.php" class="resign">退会</a><br /><br />'.
+                     '<img src="./images/icon_red.png" />
+                      今は ' . '('.$_COOKIE['user_name'].')'.' さんでログイン中<br />';
   }else {
-    $login_message = '<img src="./images/icon_green.png" /><a href="regist.php">ユーザー登録</a>　　　'.'<img src="./images/icon_blue.png" /><a href="login.php">ログイン</a>';
+    $login_message = '<img src="./images/icon_green.png" /><a href="regist.php">ユーザー登録</a>　　　'.
+                     '<img src="./images/icon_blue.png" /><a href="login.php">ログイン</a>';
   }
 
   // 「タイトルを作る」から送信ボタンが押された時
@@ -76,7 +79,7 @@
   //「タイトルを作る」の文字数判定
   if(login_check() == true){
     $title_make = '<form method="post" action="'.$_SERVER['PHP_SELF'].'">'.
-                  '<label for="title">タイトルを作る：　＜20文字以内＞</label>'.
+                  '<label for="title">タイトルを作る：＜20文字以内＞</label>'.
                   '<textarea  class="lay" name="title" cols="60" >';
       if($str_mb > 20){
         $title_make .= $title_20;
@@ -157,20 +160,18 @@
 <div id="wrapper">
   <a href="<?php echo $_SERVER['PHP_SELF']; ?>"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
 
-<div>
+<div class="disp_msg">
   <?php
     echo $regist_change;
     echo $login_message;
-    //echo $delete_title;
   ?>
 </div><!-- _END -->
 <div class="space10px"> </div>
 <div class="title-lay">
   <?php
     echo $title_make;
-    echo '<div class="space10px"></div>';
+    //echo '<div class="space10px"></div>';
     echo $title_choose;
-    //echo $delete_title;
   ?>
 </div><!-- title-lay_END -->
 
@@ -185,11 +186,11 @@
   <?php echo $title_disp; ?>
 
   </table>
-<!-- <p><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->
+<!-- <p class="home"><img src="./images/icon_l-blue.png" /><a href="<?php echo $_SERVER['PHP_SELF']; ?>">HOMEに戻る</a></p> -->
+
 </div><!-- wrapper_END -->
 <footer>
   <div class="footer">
-
   </div><!-- footer-bottom_END -->
 </footer>
 </body>

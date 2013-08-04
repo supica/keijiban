@@ -69,7 +69,10 @@
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   <h2>ログイン画面</h2>
-  <?php echo $error_message; ?>
+
+<div class="disp_msg"><?php echo $error_message; ?></div>
+<div class="space10px"> </div>
+
 <div class="log-lay">
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
     <dl>
@@ -81,10 +84,14 @@
     <label for="password" class="question">パスワード：</label>
     <input type="password" id="password" name="password" value="" class="log-form"/>
     </dt>
-    <img src="./images/icon_blue.png" /><input type="submit" value="ログイン" name="submit" class="submit" />
+    <img src="./images/icon_blue.png" /><input type="submit" value="ログイン" name="submit" class="submit_b" />
   </form>
 </div>
-<p><a href="index.php">HOMEに戻る</a></p>
+<p class="home"><img src="./images/icon_l-blue.png" /><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->
+<footer>
+  <div class="footer">
+  </div><!-- footer-bottom_END -->
+</footer>
 </body>
 </html>

@@ -15,7 +15,11 @@
 <div id="wrapper">
   <a href="index.php"><h1 id="hitokoto"><span>ひとこと掲示板</span></h1></a>
   <h2>ユーザー登録が完了しました</h2>
-<p><a href="index.php">HOMEに戻る</a></p>
+<p class="home"><img src="./images/icon_l-blue.png" /><a href="index.php">HOMEに戻る</a></p>
 </div><!-- wrapper_END -->
+<footer>
+  <div class="footer">
+  </div><!-- footer-bottom_END -->
+</footer>
 </body>
 </html>
